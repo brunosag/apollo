@@ -13,5 +13,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         return token
 
+
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
