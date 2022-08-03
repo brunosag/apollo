@@ -3,3 +3,4 @@ psycopg2
 djangorestframework
 djangorestframework-simplejwt
 django-cors-headers
+faker
