@@ -28,7 +28,7 @@ jobs:
     - name: Run Tests
       run: |
         pip install coverage
-        coverage run manage.py test
+        coverage run manage.py test --keepdb
     - name: Coverage Report
       run: |
         coverage report

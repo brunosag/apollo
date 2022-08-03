@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from datetime import timedelta
 from pathlib import Path
+import django_heroku
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +28,7 @@ SECRET_KEY = 'django-insecure-2+zo5r7oi7@+d3urh#ic#f#_evnmr84-x4*isan=sqhwmrkfbh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['apollo-boards.herokuapp.com']
 
 
 # Application definition
@@ -124,11 +126,14 @@ WSGI_APPLICATION = 'apollo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'vAjYVqVCR9pIS9tBiiZL',
-        'HOST': 'containers-us-west-84.railway.app',
-        'PORT': '7320',
+        'NAME': 'dbtveb7q9576mt',
+        'USER': 'zhmkokrhwnxqjf',
+        'PASSWORD': '28b3bfe63c4ba46c5f3829f1216c6c0422aacd34e429a925ec2c686218ccb412',
+        'HOST': 'ec2-54-161-255-125.compute-1.amazonaws.com',
+        'PORT': '5432',
+        'TEST': {
+            'NAME': 'dbtveb7q9576mt',
+        },
     }
 }
 
@@ -167,7 +172,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = 'static/'
+django_heroku.settings(locals())
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
