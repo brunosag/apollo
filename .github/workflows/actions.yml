@@ -36,4 +36,4 @@ jobs:
         DATABASE_PASS: ${{ secrets.DATABASE_PASS }}
     - name: Coverage Report
       run: |
-        coverage report
+        coverage report --fail-under=100
