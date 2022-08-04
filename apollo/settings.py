@@ -14,6 +14,11 @@ from datetime import timedelta
 from pathlib import Path
 import django_heroku
 import os
+import environ
+
+# Initialise environment variables
+env = environ.Env(DEBUG=(bool, False))
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,10 +28,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-2+zo5r7oi7@+d3urh#ic#f#_evnmr84-x4*isan=sqhwmrkfbh'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['apollo-boards.herokuapp.com']
 
@@ -126,13 +131,13 @@ WSGI_APPLICATION = 'apollo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dbtveb7q9576mt',
-        'USER': 'zhmkokrhwnxqjf',
-        'PASSWORD': '28b3bfe63c4ba46c5f3829f1216c6c0422aacd34e429a925ec2c686218ccb412',
-        'HOST': 'ec2-54-161-255-125.compute-1.amazonaws.com',
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASS'),
+        'HOST': 'ec2-3-213-228-206.compute-1.amazonaws.com',
         'PORT': '5432',
         'TEST': {
-            'NAME': 'dbtveb7q9576mt',
+            'NAME': env('DATABASE_NAME'),
         },
     }
 }
