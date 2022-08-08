@@ -67,3 +67,42 @@ class TestViews(TestSetup):
         self.assertEqual(response_list.data[0]['title'], 'Test Board')  # Created board's title is the same as provided
         self.assertEqual(response_create.status_code, 201)  # Status is 'Created'
         self.assertEqual(response_list.status_code, 200)  # Status is 'OK'
+
+    def test_board_own(self):
+        """
+        User can update and delete own boards.
+        """
+        self.client.post(self.register_url, self.user_data, format='json')  # Register
+        tokens = self.client.post(self.login_url, self.user_data, format='json')  # Get tokens
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {tokens.data['access']}")  # Set credentials
+        created_board = self.client.post(reverse('boards'), {'title': 'Test Board'}, format='json')  # Create board
+        board_id = created_board.data['id']  # Get created board's id
+        response_update = self.client.put(
+            reverse('board', args=[board_id]), {'title': 'Updated Board'}, format='json')  # Update board's title
+        response_delete = self.client.delete(reverse('board', args=[board_id]))  # Delete board
+        response_retrieve = self.client.get(reverse('board', args=[board_id]))  # Retrieve board
+        self.assertEqual(response_update.status_code, 200)  # Status is 'OK'
+        self.assertEqual(response_update.data['title'], 'Updated Board')  # Updated board's title is the provided
+        self.assertEqual(response_delete.status_code, 204)  # Status is 'OK'
+        self.assertEqual(response_retrieve.status_code, 404)  # Status is 'Not Found'
+
+    def test_board_others(self):
+        """
+        User cannot update or delete other users' boards.
+        """
+        self.client.post(self.register_url, self.user_data, format='json')  # Register
+        tokens = self.client.post(self.login_url, self.user_data, format='json')  # Get tokens
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {tokens.data['access']}")  # Set credentials
+        created_board = self.client.post(reverse('boards'), {'title': 'Test Board'}, format='json')  # Create board
+        board_id = created_board.data['id']  # Get created board's id
+        self.setUp()  # Generate new user data
+        self.client.post(self.register_url, self.user_data, format='json')  # Register
+        tokens = self.client.post(self.login_url, self.user_data, format='json')  # Get tokens
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {tokens.data['access']}")  # Set credentials
+        response_retrieve = self.client.get(reverse('board', args=[board_id]))  # Retrieve board
+        response_update = self.client.put(
+            reverse('board', args=[board_id]), {'title': 'Updated Board'}, format='json')  # Update board's title
+        response_delete = self.client.delete(reverse('board', args=[board_id]))  # Delete board
+        self.assertEqual(response_update.status_code, 404)  # Status is 'Not Found'
+        self.assertEqual(response_delete.status_code, 404)  # Status is 'Not Found'
+        self.assertEqual(response_retrieve.status_code, 404)  # Status is 'Not Found'

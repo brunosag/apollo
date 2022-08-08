@@ -35,4 +35,4 @@ class RegisterSerializer(serializers.ModelSerializer):
 class BoardSeriazlier(serializers.ModelSerializer):
     class Meta:
         model = Board
-        fields = ['title']
+        fields = ['id', 'title']

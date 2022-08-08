@@ -35,3 +35,11 @@ class BoardListView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class BoardView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = BoardSeriazlier
+
+    def get_queryset(self):
+        return Board.objects.filter(user=self.request.user, pk=self.kwargs['pk'])
