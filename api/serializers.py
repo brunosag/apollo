@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
-from .models import Board
+from .models import Board, List
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -35,4 +35,13 @@ class RegisterSerializer(serializers.ModelSerializer):
 class BoardSeriazlier(serializers.ModelSerializer):
     class Meta:
         model = Board
-        fields = ['id', 'title']
+        fields = ['id', 'title', 'lists']
+        extra_kwargs = {
+            'lists': {'required': False}
+        }
+
+
+class ListSeriazlier(serializers.ModelSerializer):
+    class Meta:
+        model = List
+        fields = ['id', 'title', 'order']
