@@ -29,12 +29,15 @@ jobs:
     - name: Run Tests
       run: |
         pip install coverage
-        coverage run manage.py test --keepdb
+        coverage run -m pytest
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        DATABASE_ENGINE: ${{ secrets.DATABASE_ENGINE }}
         DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
         DATABASE_USER: ${{ secrets.DATABASE_USER }}
         DATABASE_PASS: ${{ secrets.DATABASE_PASS }}
+        DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+        DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
     - name: Coverage Report
       run: |
         coverage report --fail-under=100
