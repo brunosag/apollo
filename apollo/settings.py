@@ -130,12 +130,12 @@ WSGI_APPLICATION = 'apollo.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': env('DATABASE_ENGINE'),
         'NAME': env('DATABASE_NAME'),
         'USER': env('DATABASE_USER'),
         'PASSWORD': env('DATABASE_PASS'),
-        'HOST': 'ec2-3-213-228-206.compute-1.amazonaws.com',
-        'PORT': '5432',
+        'HOST': env('DATABASE_HOST'),
+        'PORT': env('DATABASE_PORT'),
         'TEST': {
             'NAME': env('DATABASE_NAME'),
         },
