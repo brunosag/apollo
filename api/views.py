@@ -2,8 +2,8 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics, permissions
 
-from .models import Board, List
-from .serializers import RegisterSerializer, BoardSeriazlier, ListSerializer
+from .models import Board, List, Card
+from .serializers import RegisterSerializer, BoardSeriazlier, ListSerializer, CardSerializer
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -62,3 +62,14 @@ class ListView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         return List.objects.get(pk=self.kwargs['pk'])
+
+
+class CardsView(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = CardSerializer
+
+    def get_queryset(self):
+        return Card.objects.filter(list_id=self.kwargs['list_id'])
+
+    def perform_create(self, serializer):
+        serializer.save(list_id=self.kwargs['list_id'])
