@@ -4,7 +4,7 @@ from faker import Faker
 from rest_framework.test import APIClient
 import pytest
 
-from api.models import Board, List
+from api.models import Board, List, Card
 
 
 fake = Faker()
@@ -71,6 +71,13 @@ def list(board, titles):
 
     list = List.objects.create(board=board, title=titles['list'], order=1)
     return list
+
+
+@pytest.fixture
+def card(list, titles):
+
+    card = Card.objects.create(list=list, title=titles['card'], order=1)
+    return card
 
 
 @pytest.fixture

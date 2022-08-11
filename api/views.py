@@ -73,3 +73,11 @@ class CardsView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(list_id=self.kwargs['list_id'])
+
+
+class CardView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = CardSerializer
+
+    def get_object(self):
+        return Card.objects.get(pk=self.kwargs['pk'])
