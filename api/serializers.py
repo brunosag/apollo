@@ -41,7 +41,7 @@ class BoardSeriazlier(serializers.ModelSerializer):
         }
 
 
-class ListSeriazlier(serializers.ModelSerializer):
+class ListSerializer(serializers.ModelSerializer):
     class Meta:
         model = List
         fields = ['id', 'title', 'order']

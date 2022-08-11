@@ -4,7 +4,7 @@ from faker import Faker
 from rest_framework.test import APIClient
 import pytest
 
-from api.models import Board
+from api.models import Board, List
 
 
 fake = Faker()
@@ -60,10 +60,17 @@ def titles():
 
 
 @pytest.fixture
-def board(auth_client, titles, user):
+def board(titles, user):
 
     board = Board.objects.create(user=user, title=titles['board'])
     return board
+
+
+@pytest.fixture
+def list(board, titles):
+
+    list = List.objects.create(board=board, title=titles['list'], order=1)
+    return list
 
 
 @pytest.fixture
@@ -96,3 +103,14 @@ def auth_client2(client, user2, user_data2):
     })
     client.credentials(HTTP_AUTHORIZATION=f"Bearer {tokens.data['access']}")
     return client
+
+
+@pytest.fixture
+def titles2():
+
+    titles = {
+        'board': fake.text(max_nb_chars=32),
+        'list': fake.text(max_nb_chars=32),
+        'card': fake.text(max_nb_chars=64)
+    }
+    return titles

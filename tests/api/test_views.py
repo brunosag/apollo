@@ -32,7 +32,7 @@ def test_boards_success(auth_client, titles):
 @pytest.mark.django_db
 def test_board_fail(auth_client2, board, client):
     """
-    Unauthorized user cannot retrieve, update, or delete board.
+    Unauthorized user cannot retrieve, update, or delete boards.
     """
 
     client.credentials()
@@ -45,21 +45,21 @@ def test_board_fail(auth_client2, board, client):
 
 
 @pytest.mark.django_db
-def test_board_success(auth_client, board, titles):
+def test_board_success(auth_client, board, titles2):
     """
-    Authorized user can retrieve, update, & delete board.
+    Authorized user can retrieve, update, and delete boards.
     """
 
     response_retrieve = auth_client.get(reverse('board', args=[board.id]))
-    response_update = auth_client.put(reverse('board', args=[board.id]), {'title': titles['board']})
+    response_update = auth_client.put(reverse('board', args=[board.id]), {'title': titles2['board']})
     response_delete = auth_client.delete(reverse('board', args=[board.id]))
 
     assert response_retrieve.status_code == 200
     assert response_update.status_code == 200
     assert response_delete.status_code == 204
+    assert response_retrieve.data['id'] == board.id
     assert response_retrieve.data['title'] == board.title
-    assert response_update.data['title'] == titles['board']
-    assert 'id' and 'title' in response_retrieve.data
+    assert response_update.data['title'] == titles2['board']
 
 
 @pytest.mark.django_db
@@ -115,3 +115,53 @@ def test_lists_success(auth_client, board, titles):
     assert response_create.data['title'] == titles['list']
     assert response_create.data['order'] == 1
     assert len(response_list.data) == 2
+
+
+@pytest.mark.django_db
+def test_list_invalid(auth_client, board, list):
+    """
+    User cannot update lists with blank data.
+    """
+
+    response = auth_client.put(reverse('list', args=[board.id, list.id]), {'title': '', 'order': ''})
+
+    assert response.status_code == 400
+    assert 'title' and 'order' in response.data
+
+
+@pytest.mark.django_db
+def test_list_unauthorized(auth_client2, board, client, list):
+    """
+    Unauthorized user cannot retrieve, update, or delete lists.
+    """
+
+    client.credentials()
+
+    response_unauthenticated = client.get(reverse('list', args=[board.id, list.id]))
+    response_unauthorized = auth_client2.get(reverse('list', args=[board.id, list.id]))
+
+    assert response_unauthenticated.status_code == 401
+    assert response_unauthorized.status_code == 401
+
+
+@pytest.mark.django_db
+def test_list_success(auth_client, board, list, titles2):
+    """
+    Authorized user can retrieve, update, and delete lists.
+    """
+
+    response_retrieve = auth_client.get(reverse('list', args=[board.id, list.id]))
+    response_update = auth_client.put(reverse('list', args=[board.id, list.id]), {
+        'title': titles2['list'],
+        'order': 2
+    })
+    response_delete = auth_client.delete(reverse('list', args=[board.id, list.id]))
+
+    assert response_retrieve.status_code == 200
+    assert response_update.status_code == 200
+    assert response_delete.status_code == 204
+    assert response_retrieve.data['id'] == list.id
+    assert response_retrieve.data['title'] == list.title
+    assert response_retrieve.data['order'] == list.order
+    assert response_update.data['title'] == titles2['list']
+    assert response_update.data['order'] == 2
