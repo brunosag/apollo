@@ -1,32 +1,38 @@
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics, permissions
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import Board, List, Card
-from .serializers import RegisterSerializer, BoardSeriazlier, ListSerializer, CardSerializer
-
-
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-
-        # Add custom claims
-        token['username'] = user.username
-        token['email'] = user.email
-
-        return token
+from .serializers import (
+    MyTokenObtainPairSerializer,
+    RegisterSerializer,
+    BoardSeriazlier,
+    ListSerializer,
+    CardSerializer
+)
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
+    """
+    Takes the user's credentials and returns both an access and refresh type JSON web tokens.
+    """
     serializer_class = MyTokenObtainPairSerializer
 
 
 class RegisterView(generics.CreateAPIView):
+    """
+    Creates a new user instance.
+    """
     serializer_class = RegisterSerializer
 
 
 class BoardsView(generics.ListCreateAPIView):
+    """
+    get:
+    Returns a list of all the user's boards.
+
+    post:
+    Creates a new board instance.
+    """
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = BoardSeriazlier
 
@@ -39,6 +45,19 @@ class BoardsView(generics.ListCreateAPIView):
 
 
 class BoardView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    get:
+    Returns a board's details.
+
+    put:
+    Updates a board's details.
+
+    patch:
+    Partially updates a board's details.
+
+    delete:
+    Deletes a board instance.
+    """
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = BoardSeriazlier
 
@@ -48,6 +67,13 @@ class BoardView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ListsView(generics.ListCreateAPIView):
+    """
+    get:
+    Returns a list of all the user's lists.
+
+    post:
+    Creates a new list instance.
+    """
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = ListSerializer
 
@@ -58,6 +84,19 @@ class ListsView(generics.ListCreateAPIView):
 
 
 class ListView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    get:
+    Returns a list's details.
+
+    put:
+    Updates a list's details.
+
+    patch:
+    Partially updates a list's details.
+
+    delete:
+    Deletes a list instance.
+    """
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = ListSerializer
 
@@ -67,6 +106,13 @@ class ListView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class CardsView(generics.ListCreateAPIView):
+    """
+    get:
+    Returns a list of all the user's cards.
+
+    post:
+    Creates a new card instance.
+    """
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = CardSerializer
 
@@ -78,6 +124,19 @@ class CardsView(generics.ListCreateAPIView):
 
 
 class CardView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    get:
+    Returns a card's details.
+
+    put:
+    Updates a card's details.
+
+    patch:
+    Partially updates a card's details.
+
+    delete:
+    Deletes a card instance.
+    """
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = CardSerializer
 
