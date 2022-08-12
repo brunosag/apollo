@@ -121,3 +121,17 @@ def titles2():
         'card': fake.text(max_nb_chars=64)
     }
     return titles
+
+
+@pytest.fixture
+def board2(titles, user):
+
+    board = Board.objects.create(user=user, title=titles['board'])
+    return board
+
+
+@pytest.fixture
+def list2(board, titles):
+
+    list = List.objects.create(board=board, title=titles['list'], order=1)
+    return list

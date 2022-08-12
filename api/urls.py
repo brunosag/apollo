@@ -10,8 +10,8 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('boards/', BoardsView.as_view(), name='boards'),
     path('boards/<int:pk>', BoardView.as_view(), name='board'),
-    path('boards/<int:board_id>/lists/', ListsView.as_view(), name='lists'),
-    path('boards/<int:board_id>/lists/<int:pk>', ListView.as_view(), name='list'),
-    path('boards/<int:board_id>/lists/<int:list_id>/cards/', CardsView.as_view(), name='cards'),
-    path('boards/<int:board_id>/lists/<int:list_id>/cards/<int:pk>', CardView.as_view(), name='card')
+    path('lists/', ListsView.as_view(), name='lists'),
+    path('lists/<int:pk>', ListView.as_view(), name='list'),
+    path('cards/', CardsView.as_view(), name='cards'),
+    path('cards/<int:pk>', CardView.as_view(), name='card')
 ]

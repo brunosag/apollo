@@ -68,8 +68,7 @@ def test_board_success(auth_client, board, titles2):
     response_update = auth_client.put(reverse('board', args=[board.id]), {'title': titles2['board']})
     response_delete = auth_client.delete(reverse('board', args=[board.id]))
 
-    assert response_retrieve.status_code == 200
-    assert response_update.status_code == 200
+    assert response_retrieve.status_code and response_update.status_code == 200
     assert response_delete.status_code == 204
     assert response_retrieve.data['id'] == board.id
     assert response_retrieve.data['title'] == board.title

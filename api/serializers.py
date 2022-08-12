@@ -35,19 +35,18 @@ class RegisterSerializer(serializers.ModelSerializer):
 class BoardSeriazlier(serializers.ModelSerializer):
     class Meta:
         model = Board
-        fields = ['id', 'title', 'lists']
-        extra_kwargs = {
-            'lists': {'required': False}
-        }
+        fields = ['id', 'title', 'last_access', 'lists']
+        read_only_fields = ['last_access', 'lists']
 
 
 class ListSerializer(serializers.ModelSerializer):
     class Meta:
         model = List
-        fields = ['id', 'title', 'order', 'cards']
+        fields = ['id', 'board', 'title', 'order', 'cards']
+        read_only_fields = ['cards']
 
 
 class CardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Card
-        fields = ['id', 'title', 'order']
+        fields = ['id', 'list', 'title', 'order']

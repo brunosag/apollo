@@ -31,7 +31,8 @@ class BoardsView(generics.ListCreateAPIView):
     serializer_class = BoardSeriazlier
 
     def get_queryset(self):
-        return Board.objects.filter(user=self.request.user)
+        boards = Board.objects.filter(user=self.request.user)
+        return boards
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -42,7 +43,8 @@ class BoardView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BoardSeriazlier
 
     def get_object(self):
-        return Board.objects.get(user=self.request.user, pk=self.kwargs['pk'])
+        board = Board.objects.get(user=self.request.user, pk=self.kwargs['pk'])
+        return board
 
 
 class ListsView(generics.ListCreateAPIView):
@@ -50,10 +52,9 @@ class ListsView(generics.ListCreateAPIView):
     serializer_class = ListSerializer
 
     def get_queryset(self):
-        return List.objects.filter(board_id=self.kwargs['board_id'])
-
-    def perform_create(self, serializer):
-        serializer.save(board_id=self.kwargs['board_id'])
+        boards = Board.objects.filter(user=self.request.user)
+        lists = List.objects.filter(board__in=boards)
+        return lists
 
 
 class ListView(generics.RetrieveUpdateDestroyAPIView):
@@ -61,7 +62,8 @@ class ListView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ListSerializer
 
     def get_object(self):
-        return List.objects.get(pk=self.kwargs['pk'])
+        list = List.objects.get(pk=self.kwargs['pk'])
+        return list
 
 
 class CardsView(generics.ListCreateAPIView):
@@ -69,10 +71,10 @@ class CardsView(generics.ListCreateAPIView):
     serializer_class = CardSerializer
 
     def get_queryset(self):
-        return Card.objects.filter(list_id=self.kwargs['list_id'])
-
-    def perform_create(self, serializer):
-        serializer.save(list_id=self.kwargs['list_id'])
+        boards = Board.objects.filter(user=self.request.user)
+        lists = List.objects.filter(board__in=boards)
+        cards = Card.objects.filter(list__in=lists)
+        return cards
 
 
 class CardView(generics.RetrieveUpdateDestroyAPIView):
@@ -80,4 +82,5 @@ class CardView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CardSerializer
 
     def get_object(self):
-        return Card.objects.get(pk=self.kwargs['pk'])
+        card = Card.objects.get(pk=self.kwargs['pk'])
+        return card
