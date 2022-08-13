@@ -2,7 +2,7 @@
 <h1 align="center">
     <br>
     <a href="https://apollo-boards.herokuapp.com/api/">
-        <img src="https://user-images.githubusercontent.com/97703272/184455100-8e639274-4e84-409a-8ae7-59ef2393eb63.png" alt="Apollo" width="200">
+        <img src="https://user-images.githubusercontent.com/97703272/184503458-31d3b018-cd41-4337-ab51-fb55a5fa3140.png" alt="Apollo" width="200">
     </a>
     <br>
     Apollo
@@ -23,7 +23,7 @@
 
 🏗️ ***Front-end currently in development.***
 
-Apollo is a Kanban-style list-making application built with Django and Django REST Framework. Through an API, users are allowed to authenticate using JSON Web Tokens and perform CRUD operations on Boards, Lists, and Cards.
+Apollo is a Kanban-style list-making application built with Django and Django REST Framework. Through an API, users are allowed to authenticate using JWT and perform CRUD operations on Boards, Lists, and Cards.
 
 
 ### Built With
