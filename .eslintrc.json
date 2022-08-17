@@ -1,0 +1,21 @@
+{
+	"env": {
+		"browser": true,
+		"es2021": true
+	},
+	"extends": ["plugin:react/recommended", "airbnb"],
+	"plugins": ["react"],
+	"rules": {
+		"indent": ["error", "tab"],
+		"linebreak-style": ["error", "unix"],
+		"no-tabs": [
+			"error",
+			{
+				"allowIndentationTabs": true
+			}
+		],
+		"no-unused-vars": "warn",
+		"react/jsx-indent-props": ["error", "tab"],
+		"react/jsx-indent": ["error", "tab"]
+	}
+}
