@@ -8,14 +8,11 @@
 	"rules": {
 		"indent": ["error", "tab"],
 		"linebreak-style": ["error", "unix"],
-		"no-tabs": [
-			"error",
-			{
-				"allowIndentationTabs": true
-			}
-		],
+		"no-tabs": "off",
 		"no-unused-vars": "warn",
+		"object-curly-newline": "off",
 		"react/jsx-indent-props": ["error", "tab"],
-		"react/jsx-indent": ["error", "tab"]
+		"react/jsx-indent": ["error", "tab"],
+		"react/jsx-sort-props": [1, { "multiline": "last", "shorthandFirst": true }]
 	}
 }
