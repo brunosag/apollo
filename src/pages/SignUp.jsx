@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import PropTypes from 'prop-types';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import AlertCollapse from '../components/AlertCollapse';
 import AuthContext from '../components/AuthContext';
 
 function Copyright({ sx }) {
@@ -27,12 +28,14 @@ function Copyright({ sx }) {
 export default function SignUp() {
 	const { loginUser } = useContext(AuthContext);
 
+	const [alerts, setAlerts] = useState([]);
+
 	const baseURL = 'http://127.0.0.1:8000/api/';
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		fetch(`${baseURL}register/`, {
+		const response = await fetch(`${baseURL}register/`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -43,8 +46,20 @@ export default function SignUp() {
 				password: e.target.password.value,
 				confirmation: e.target.confirmation.value,
 			}),
-		})
-			.then(() => loginUser(e));
+		});
+		const data = await response.json();
+
+		if (response.status === 201) {
+			loginUser(e);
+		} else {
+			const newAlerts = Object.values(data).map((message, index) => Object.create({
+				message,
+				id: index,
+				severity: 'error',
+				open: true,
+			}));
+			setAlerts(newAlerts);
+		}
 	};
 
 	return (
@@ -67,6 +82,21 @@ export default function SignUp() {
 						Sign up
 					</Typography>
 					<Box noValidate component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+						<Box sx={{
+							display: 'flex',
+							flexDirection: 'column',
+							gap: 1,
+						}}
+						>
+							{alerts.map((alert) => (
+								<AlertCollapse
+									alert={alert}
+									alerts={alerts}
+									key={alert.id}
+									setAlerts={setAlerts}
+								/>
+							))}
+						</Box>
 						<TextField
 							autoFocus
 							fullWidth
