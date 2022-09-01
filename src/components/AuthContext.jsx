@@ -14,13 +14,12 @@ export function AuthProvider({ children }) {
 	const [user, setUser] = useState(() => (localStorage.getItem('authTokens') ? jwtDecode(localStorage.getItem('authTokens')) : null));
 	const [loading, setLoading] = useState(true);
 
-	const baseURL = 'http://127.0.0.1:8000/api/';
 	const navigate = useNavigate();
 
 	const loginUser = async (e, setAlerts) => {
 		e.preventDefault();
 
-		const response = await fetch(`${baseURL}token/`, {
+		const response = await fetch('api/token/', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -57,7 +56,7 @@ export function AuthProvider({ children }) {
 
 	const updateToken = async () => {
 		if (authTokens) {
-			const response = await fetch(`${baseURL}token/refresh/`, {
+			const response = await fetch('api/token/refresh/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

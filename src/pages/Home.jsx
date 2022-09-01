@@ -8,10 +8,8 @@ export default function Home() {
 	const { authTokens, logoutUser, user } = useContext(AuthContext);
 	const [boards, setBoards] = useState([]);
 
-	const baseURL = 'http://127.0.0.1:8000/api/';
-
 	const getBoards = async () => {
-		const response = await fetch(`${baseURL}boards/`, {
+		const response = await fetch('api/boards/', {
 			method: 'GET',
 			headers: {
 				Authorization: `Bearer ${String(authTokens.access)}`,

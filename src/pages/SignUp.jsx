@@ -30,12 +30,10 @@ export default function SignUp() {
 
 	const [alerts, setAlerts] = useState([]);
 
-	const baseURL = 'http://127.0.0.1:8000/api/';
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		const response = await fetch(`${baseURL}register/`, {
+		const response = await fetch('api/register/', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -77,7 +75,7 @@ export default function SignUp() {
 						py: 8,
 					}}
 				>
-					<Avatar src="logo-nobg.png" sx={{ m: 1, mt: 'auto' }} variant="square" />
+					<Avatar src="/static/assets/logo-nobg.png" sx={{ m: 1, mt: 'auto' }} variant="square" />
 					<Typography component="h1" variant="h5">
 						Sign up
 					</Typography>
@@ -157,7 +155,7 @@ export default function SignUp() {
 				xs={false}
 				sx={{
 					backgroundColor: (t) => (t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900]),
-					backgroundImage: 'url(bg.jpg)',
+					backgroundImage: 'url(/static/assets/bg.jpg)',
 					backgroundPosition: 'center',
 					backgroundRepeat: 'no-repeat',
 					backgroundSize: 'cover',
