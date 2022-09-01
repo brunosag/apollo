@@ -17,7 +17,7 @@ export function AuthProvider({ children }) {
 	const baseURL = 'http://127.0.0.1:8000/api/';
 	const navigate = useNavigate();
 
-	const loginUser = async (e) => {
+	const loginUser = async (e, setAlerts) => {
 		e.preventDefault();
 
 		const response = await fetch(`${baseURL}token/`, {
@@ -38,7 +38,13 @@ export function AuthProvider({ children }) {
 			localStorage.setItem('authTokens', JSON.stringify(data));
 			navigate('/');
 		} else {
-			alert('Something went wrong!');
+			const alerts = Object.values(data).map((message, index) => Object.create({
+				message,
+				id: index,
+				severity: 'error',
+				open: true,
+			}));
+			setAlerts(alerts);
 		}
 	};
 
