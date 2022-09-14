@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { grey } from '@mui/material/colors';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -13,47 +13,28 @@ import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import AuthContext from './AuthContext';
+import useBoards from '../utils/useBoards';
 
 export default function Layout() {
-	const { authTokens, logoutUser } = useContext(AuthContext);
-	const [boards, setBoards] = useState([]);
-
-	const [anchorElNav, setAnchorElNav] = React.useState(null);
-	const [anchorElBoards, setAnchorElBoards] = React.useState(null);
+	const { logoutUser } = useContext(AuthContext);
+	const [anchorElNav, setAnchorElNav] = useState(null);
+	const [anchorElBoards, setAnchorElBoards] = useState(null);
 
 	const handleOpenNavMenu = (event) => {
 		setAnchorElNav(event.currentTarget);
 	};
-	const handleOpenBoardsMenu = (event) => {
+	const handleOpenBoardMenu = (event) => {
 		setAnchorElBoards(event.currentTarget);
 	};
 	const handleCloseNavMenu = () => {
 		setAnchorElNav(null);
 	};
-	const handleCloseBoardsMenu = () => {
+	const handleCloseBoardMenu = () => {
 		setAnchorElBoards(null);
 	};
 
-	const getBoards = async () => {
-		const response = await fetch('api/boards/', {
-			method: 'GET',
-			headers: {
-				Authorization: `Bearer ${String(authTokens.access)}`,
-				'Content-Type': 'application/json',
-			},
-		});
-		const data = await response.json();
-
-		if (response.status === 200) {
-			setBoards(data);
-		} else if (response.statusText === 'Unauthorized') {
-			logoutUser();
-		}
-	};
-
-	useEffect(() => {
-		getBoards();
-	}, []);
+	const boards = useBoards();
+	const navigate = useNavigate();
 
 	return (
 		<Box>
@@ -143,7 +124,7 @@ export default function Layout() {
 							<Box sx={{ flexGrow: 1 }}>
 								<Button
 									color="inherit"
-									onClick={handleOpenBoardsMenu}
+									onClick={handleOpenBoardMenu}
 									endIcon={(
 										<KeyboardArrowDownIcon
 											sx={{
@@ -165,7 +146,7 @@ export default function Layout() {
 									keepMounted
 									anchorEl={anchorElBoards}
 									id="menu-appbar"
-									onClose={handleCloseBoardsMenu}
+									onClose={handleCloseBoardMenu}
 									open={Boolean(anchorElBoards)}
 									sx={{ mt: '45px' }}
 									anchorOrigin={{
@@ -178,8 +159,16 @@ export default function Layout() {
 									}}
 								>
 									{boards.map((board) => (
-										<MenuItem key={board} onClick={handleCloseBoardsMenu}>
-											<Typography textAlign="center">{board}</Typography>
+										<MenuItem
+											key={board.id}
+											onClick={() => {
+												navigate(`/${board.id}`);
+												handleCloseBoardMenu();
+											}}
+										>
+											<Typography textAlign="center">
+												{board.title}
+											</Typography>
 										</MenuItem>
 									))}
 								</Menu>
