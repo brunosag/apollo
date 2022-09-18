@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { grey } from '@mui/material/colors';
 import { Outlet, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
@@ -13,12 +13,34 @@ import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import AuthContext from './AuthContext';
-import useBoards from '../utils/useBoards';
 
 export default function Layout() {
-	const { logoutUser } = useContext(AuthContext);
+	const { authTokens, logoutUser } = useContext(AuthContext);
 	const [anchorElNav, setAnchorElNav] = useState(null);
 	const [anchorElBoards, setAnchorElBoards] = useState(null);
+	const [boards, setBoards] = useState([]);
+	const navigate = useNavigate();
+
+	const getBoards = async () => {
+		const response = await fetch('api/boards/', {
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${String(authTokens.access)}`,
+				'Content-Type': 'application/json',
+			},
+		});
+		const data = await response.json();
+
+		if (response.status === 200) {
+			setBoards(data);
+		} else if (response.statusText === 'Unauthorized') {
+			logoutUser();
+		}
+	};
+
+	useEffect(() => {
+		getBoards();
+	}, []);
 
 	const handleOpenNavMenu = (event) => {
 		setAnchorElNav(event.currentTarget);
@@ -32,9 +54,6 @@ export default function Layout() {
 	const handleCloseBoardMenu = () => {
 		setAnchorElBoards(null);
 	};
-
-	const boards = useBoards();
-	const navigate = useNavigate();
 
 	return (
 		<Box>
@@ -68,7 +87,12 @@ export default function Layout() {
 								Apollo
 							</Typography>
 						</Box>
-						<Box sx={{ display: { xs: 'flex', md: 'none' }, ml: 'auto' }}>
+						<Box
+							sx={{
+								display: { xs: 'flex', md: 'none' },
+								ml: 'auto',
+							}}
+						>
 							<IconButton
 								aria-controls="menu-appbar"
 								aria-haspopup="true"
@@ -98,17 +122,29 @@ export default function Layout() {
 								}}
 							>
 								<MenuItem onClick={handleCloseNavMenu}>
-									<Typography textAlign="center">Home</Typography>
+									<Typography textAlign="center">
+										Home
+									</Typography>
 								</MenuItem>
 								<MenuItem onClick={handleCloseNavMenu}>
-									<Typography textAlign="center">Boards</Typography>
+									<Typography textAlign="center">
+										Boards
+									</Typography>
 								</MenuItem>
 								<MenuItem onClick={logoutUser}>
-									<Typography textAlign="center">Logout</Typography>
+									<Typography textAlign="center">
+										Logout
+									</Typography>
 								</MenuItem>
 							</Menu>
 						</Box>
-						<Box sx={{ flexGrow: 1, gap: 4, display: { xs: 'none', md: 'flex' } }}>
+						<Box
+							sx={{
+								flexGrow: 1,
+								gap: 4,
+								display: { xs: 'none', md: 'flex' },
+							}}
+						>
 							<Button
 								color="inherit"
 								href="/"
@@ -190,7 +226,7 @@ export default function Layout() {
 					</Toolbar>
 				</Container>
 			</AppBar>
-			<Outlet />
+			<Outlet context={{ boards, getBoards }} />
 		</Box>
 	);
 }

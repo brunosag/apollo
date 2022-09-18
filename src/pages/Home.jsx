@@ -1,12 +1,13 @@
 import React from 'react';
+import { useOutletContext } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
-import useBoards from '../utils/useBoards';
+import CreateBoard from '../components/CreateBoard';
 
 export default function Home() {
-	const boards = useBoards();
+	const { boards, getBoards } = useOutletContext();
 
 	return (
 		<Container maxWidth="md">
@@ -18,7 +19,11 @@ export default function Home() {
 			>
 				My Boards
 			</Typography>
-			<Grid container spacing={2} sx={{ justifyContent: 'center', pb: 1 }}>
+			<Grid
+				container
+				spacing={2}
+				sx={{ justifyContent: 'center', pb: 1 }}
+			>
 				{boards.map((board) => (
 					<Grid key={board.id} sm={4} xs={12}>
 						<Button
@@ -39,24 +44,7 @@ export default function Home() {
 					</Grid>
 				))}
 				<Grid sm={4} xs={12}>
-					<Button
-						disableElevation
-						color="inherit"
-						variant="contained"
-						sx={{
-							':hover': {
-								backgroundColor: 'hsl(0, 0%, 88%)',
-							},
-							aspectRatio: '16/9',
-							backgroundColor: 'grey.200',
-							textTransform: 'none',
-							width: '100%',
-						}}
-					>
-						<Typography color="text.disabled" fontSize="large">
-							Create new board
-						</Typography>
-					</Button>
+					<CreateBoard getBoards={getBoards} />
 				</Grid>
 			</Grid>
 		</Container>

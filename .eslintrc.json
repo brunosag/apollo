@@ -8,6 +8,7 @@
 	"rules": {
 		"indent": ["error", "tab"],
 		"linebreak-style": ["error", "unix"],
+		"max-len": ["warn", { "code": 80 }],
 		"no-tabs": "off",
 		"no-unused-vars": "warn",
 		"object-curly-newline": "off",
