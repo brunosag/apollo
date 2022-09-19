@@ -1,7 +1,7 @@
 import React from 'react';
-import { amber } from '@mui/material/colors';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline';
 import { AuthProvider } from './components/AuthContext';
 import Home from './pages/Home';
 import Layout from './components/Layout';
@@ -11,13 +11,19 @@ import SignUp from './pages/SignUp';
 
 const theme = createTheme({
 	palette: {
-		primary: amber,
+		mode: 'dark',
+		primary: {
+			main: '#e7b56a',
+			light: '#eecb96',
+			dark: '#e09f3e',
+		},
 	},
 });
 
 export default function App() {
 	return (
 		<ThemeProvider theme={theme}>
+			<CssBaseline />
 			<Router>
 				<AuthProvider>
 					<Routes>

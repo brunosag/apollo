@@ -78,10 +78,10 @@ export default function Layout() {
 							/>
 							<Typography
 								noWrap
+								color="text.primary"
 								variant="h5"
 								sx={{
-									color: grey[800],
-									fontWeight: 500,
+									fontWeight: 400,
 								}}
 							>
 								Apollo
@@ -96,12 +96,11 @@ export default function Layout() {
 							<IconButton
 								aria-controls="menu-appbar"
 								aria-haspopup="true"
-								aria-label="account of current user"
 								color="inherit"
 								onClick={handleOpenNavMenu}
 								size="large"
 							>
-								<MenuIcon sx={{ color: grey[800] }} />
+								<MenuIcon />
 							</IconButton>
 							<Menu
 								keepMounted
@@ -149,7 +148,6 @@ export default function Layout() {
 								color="inherit"
 								href="/"
 								sx={{
-									color: grey[800],
 									fontSize: 16,
 									my: 2,
 									textTransform: 'capitalize',
@@ -164,13 +162,12 @@ export default function Layout() {
 									endIcon={(
 										<KeyboardArrowDownIcon
 											sx={{
-												color: grey[400],
+												color: grey[500],
 												ml: -0.8,
 											}}
 										/>
 									)}
 									sx={{
-										color: grey[800],
 										fontSize: 16,
 										my: 2,
 										textTransform: 'capitalize',
@@ -214,7 +211,6 @@ export default function Layout() {
 								onClick={logoutUser}
 								sx={{
 									fontSize: 16,
-									color: grey[800],
 									display: 'block',
 									my: 2,
 									textTransform: 'capitalize',

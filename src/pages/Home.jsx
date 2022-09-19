@@ -13,7 +13,6 @@ export default function Home() {
 		<Container maxWidth="md">
 			<Typography
 				align="center"
-				color="grey.800"
 				sx={{ my: 4 }}
 				variant="h4"
 			>

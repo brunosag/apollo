@@ -20,15 +20,14 @@ export default function CreateBoard({ getBoards }) {
 		<div>
 			<Button
 				disableElevation
-				color="inherit"
 				onClick={handleOpen}
 				variant="contained"
 				sx={{
 					':hover': {
-						backgroundColor: 'hsl(0, 0%, 88%)',
+						backgroundColor: 'hsla(0, 0%, 100%, 0.08)',
 					},
 					aspectRatio: '16/9',
-					backgroundColor: 'grey.200',
+					backgroundColor: 'hsla(0, 0%, 100%, 0.05)',
 					textTransform: 'none',
 					width: '100%',
 				}}
