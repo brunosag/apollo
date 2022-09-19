@@ -56,7 +56,12 @@ export default function Layout() {
 	};
 
 	return (
-		<Box>
+		<Box sx={{
+			height: '100vh',
+			display: 'flex',
+			flexDirection: 'column',
+		}}
+		>
 			<AppBar color="transparent" elevation={0} position="static">
 				<Container maxWidth="lg">
 					<Toolbar disableGutters>

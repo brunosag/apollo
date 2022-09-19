@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
+import Board from './pages/Board';
 import { AuthProvider } from './components/AuthContext';
 import Home from './pages/Home';
 import Layout from './components/Layout';
@@ -30,6 +31,7 @@ export default function App() {
 						<Route element={<PrivateWrapper />}>
 							<Route element={<Layout />}>
 								<Route exact element={<Home />} path="/" />
+								<Route element={<Board />} path="/:id" />
 							</Route>
 						</Route>
 						<Route element={<SignIn />} path="/signin" />
