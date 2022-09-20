@@ -66,14 +66,13 @@ export default function Layout() {
 				<Container maxWidth="lg">
 					<Toolbar disableGutters>
 						<Box
-							component="a"
-							href="/"
+							onClick={() => navigate('/')}
 							sx={{
+								cursor: 'pointer',
 								alignItems: 'center',
 								display: 'flex',
 								gap: 0.8,
 								mr: 5,
-								textDecoration: 'none',
 							}}
 						>
 							<img
@@ -151,7 +150,7 @@ export default function Layout() {
 						>
 							<Button
 								color="inherit"
-								href="/"
+								onClick={() => navigate('/')}
 								sx={{
 									fontSize: 16,
 									my: 2,

@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -36,6 +37,7 @@ function Copyright({ sx }) {
 export default function SignUp() {
 	const { loginUser } = useContext(AuthContext);
 	const [alerts, setAlerts] = useState([]);
+	const navigate = useNavigate();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -167,7 +169,11 @@ export default function SignUp() {
 							variant="body2"
 						>
 							{'Already have an account? '}
-							<Link color="textSecondary" href="/signin">
+							<Link
+								color="textSecondary"
+								component="button"
+								onClick={() => navigate('/signin')}
+							>
 								Sign in
 							</Link>
 						</Typography>

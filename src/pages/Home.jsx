@@ -1,5 +1,5 @@
 import React from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -8,6 +8,7 @@ import CreateBoard from '../components/CreateBoard';
 
 export default function Home() {
 	const { boards, getBoards } = useOutletContext();
+	const navigate = useNavigate();
 
 	return (
 		<Container maxWidth="md">
@@ -27,7 +28,7 @@ export default function Home() {
 					<Grid key={board.id} sm={4} xs={12}>
 						<Button
 							color="primary"
-							href={`/${board.id}`}
+							onClick={() => navigate(`/${board.id}`)}
 							variant="contained"
 							sx={{
 								aspectRatio: '16/9',

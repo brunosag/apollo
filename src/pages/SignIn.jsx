@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -35,6 +36,7 @@ function Copyright({ sx }) {
 export default function SignIn() {
 	const { loginUser } = useContext(AuthContext);
 	const [alerts, setAlerts] = useState([]);
+	const navigate = useNavigate();
 
 	return (
 		<Grid container component="main" sx={{ height: '100vh' }}>
@@ -132,7 +134,11 @@ export default function SignIn() {
 							variant="body2"
 						>
 							{'Don\'t have an account? '}
-							<Link color="textSecondary" href="/signup">
+							<Link
+								color="textSecondary"
+								component="button"
+								onClick={() => navigate('/signup')}
+							>
 								Sign up
 							</Link>
 						</Typography>
