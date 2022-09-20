@@ -26,7 +26,7 @@ export default function Board() {
 
 	useEffect(() => {
 		getBoard();
-	}, []);
+	}, [id]);
 
 	return (
 		<Container
