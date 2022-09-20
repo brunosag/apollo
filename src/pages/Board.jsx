@@ -1,35 +1,32 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import AuthContext from '../components/AuthContext';
 
 export default function Board() {
+	const { authTokens, logoutUser } = useContext(AuthContext);
+	const [board, setBoard] = useState(null);
 	const { id } = useParams();
-	const board = {
-		id,
-		title: 'Board1',
-		lists: [
-			{
-				title: 'List1',
-				order: 1,
-				cards: [
-					{ title: 'Card1', order: 1 },
-					{ title: 'Card2', order: 2 },
-					{ title: 'Card3', order: 3 },
-				],
-			},
-			{
-				title: 'List2',
-				order: 2,
-				cards: [
-					{ title: 'Card1', order: 1 },
-					{ title: 'Card2', order: 2 },
-				],
-			},
-		],
+
+	const getBoard = async () => {
+		const response = await fetch(`api/boards/${id}`, {
+			headers: { Authorization: `Bearer ${String(authTokens.access)}` },
+		});
+		const data = await response.json();
+
+		if (response.status === 200) {
+			setBoard(data);
+		} else if (response.statusText === 'Unauthorized') {
+			logoutUser();
+		}
 	};
+
+	useEffect(() => {
+		getBoard();
+	}, []);
 
 	return (
 		<Container
@@ -42,7 +39,7 @@ export default function Board() {
 				sx={{ my: 4 }}
 				variant="h4"
 			>
-				{board.title}
+				{board && board.title}
 			</Typography>
 			<Box
 				sx={{
@@ -53,9 +50,10 @@ export default function Board() {
 					px: 2,
 				}}
 			>
-				{board.lists.map((list) => (
+				{board && board.lists.map((list) => (
 					<Paper
 						elevation={0}
+						key={list.id}
 						sx={{
 							backgroundColor: 'grey.900',
 							flexShrink: 0,
@@ -74,6 +72,7 @@ export default function Board() {
 						{list.cards.map((card) => (
 							<Paper
 								elevation={2}
+								key={card.id}
 								sx={{
 									backgroundColor: 'grey.900',
 									mt: 1,
