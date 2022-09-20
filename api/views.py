@@ -37,7 +37,7 @@ class BoardsView(generics.ListCreateAPIView):
     serializer_class = BoardSeriazlier
 
     def get_queryset(self):
-        boards = Board.objects.filter(user=self.request.user)
+        boards = Board.objects.filter(user=self.request.user).order_by('-last_access')
         return boards
 
     def perform_create(self, serializer):
