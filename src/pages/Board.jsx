@@ -5,6 +5,7 @@ import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import AuthContext from '../components/AuthContext';
+import AddList from '../components/AddList';
 
 export default function Board() {
 	const { authTokens, logoutUser } = useContext(AuthContext);
@@ -45,8 +46,8 @@ export default function Board() {
 				sx={{
 					display: 'flex',
 					flexGrow: 1,
-					overflow: 'auto',
 					gap: 1,
+					overflow: 'auto',
 					px: 2,
 				}}
 			>
@@ -63,7 +64,6 @@ export default function Board() {
 						}}
 					>
 						<Typography
-							fontSize={16}
 							fontWeight={600}
 							sx={{ px: 1, py: 0.5 }}
 						>
@@ -84,6 +84,7 @@ export default function Board() {
 						))}
 					</Paper>
 				))}
+				<AddList board={board} getBoard={getBoard} />
 			</Box>
 		</Container>
 	);
