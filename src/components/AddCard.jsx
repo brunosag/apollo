@@ -10,7 +10,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import AuthContext from './AuthContext';
 
-export default function AddList({ board, getBoard }) {
+export default function AddCard({ getBoard, list }) {
 	const { authTokens } = useContext(AuthContext);
 	const [open, setOpen] = useState(false);
 	const [title, setTitle] = useState('');
@@ -36,9 +36,9 @@ export default function AddList({ board, getBoard }) {
 		setOpen(false);
 	};
 
-	const addList = async () => {
+	const addCard = async () => {
 		if (title.trim()) {
-			await fetch('api/lists/', {
+			await fetch('api/cards/', {
 				method: 'POST',
 				headers: {
 					Authorization: `Bearer ${String(authTokens.access)}`,
@@ -46,8 +46,8 @@ export default function AddList({ board, getBoard }) {
 				},
 				body: JSON.stringify({
 					title,
-					board: board.id,
-					order: board.lists.length + 1,
+					list: list.id,
+					order: list.cards.length + 1,
 				}),
 			});
 			await getBoard();
@@ -60,7 +60,7 @@ export default function AddList({ board, getBoard }) {
 		if (e.key === 'Escape') {
 			handleClose();
 		} else if (e.key === 'Enter') {
-			addList();
+			addCard();
 		}
 	};
 
@@ -74,36 +74,33 @@ export default function AddList({ board, getBoard }) {
 		<Box sx={{ height: 'min-content' }}>
 			<Button
 				disableRipple
+				fullWidth
 				color="inherit"
 				onClick={handleOpen}
 				ref={openButton}
 				sx={{
 					':hover': {
-						backgroundColor: 'rgba(255, 255, 255, 0.1)',
+						backgroundColor: '#2a2a2a',
 					},
-					backgroundColor: 'rgba(255, 255, 255, 0.062)',
 					display: open ? 'none' : 'inline-flex',
-					flexShrink: 0,
-					height: 'min-content',
 					justifyContent: 'start',
-					p: 1,
+					mt: 1,
+					px: 1,
+					py: 0.5,
 					textTransform: 'none',
-					width: 288,
 				}}
 			>
 				<Box sx={{
 					alignItems: 'center',
 					display: 'flex',
 					gap: 0.5,
-					px: 1,
-					py: 0.5,
 				}}
 				>
 					<AddIcon
 						fontSize="small"
 						sx={{ color: 'grey.600' }}
 					/>
-					<Typography color="textSecondary">Add a list</Typography>
+					<Typography color="textSecondary">Add a card</Typography>
 				</Box>
 			</Button>
 
@@ -113,22 +110,20 @@ export default function AddList({ board, getBoard }) {
 				sx={{
 					backgroundColor: 'grey.900',
 					display: open ? 'block' : 'none',
-					flexShrink: 0,
-					height: 'min-content',
-					p: 1,
-					width: 288,
+					mt: 1,
 				}}
 			>
 				<TextField
 					autoFocus
 					fullWidth
 					multiline
-					label="List title"
+					label="Card title"
 					onChange={handleChange}
 					onKeyUp={handleKeyUp}
 					size="small"
+					sx={{ backgroundColor: 'hsl(0, 0%, 11%)' }}
 					value={title}
-					variant="outlined"
+					variant="filled"
 				/>
 				<Box
 					sx={{
@@ -139,17 +134,17 @@ export default function AddList({ board, getBoard }) {
 					}}
 				>
 					<Button
-						onClick={addList}
+						onClick={addCard}
 						size="small"
 						variant="contained"
 					>
-						Add list
+						Add card
 					</Button>
 					<ButtonBase
 						disableTouchRipple
 						onClick={handleClose}
 					>
-						<CloseIcon sx={{ fontSize: 26 }} />
+						<CloseIcon sx={{ color: 'grey.500', fontSize: 26 }} />
 					</ButtonBase>
 				</Box>
 			</Paper>

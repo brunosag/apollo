@@ -6,6 +6,7 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import AuthContext from '../components/AuthContext';
 import AddList from '../components/AddList';
+import AddCard from '../components/AddCard';
 
 export default function Board() {
 	const { authTokens, logoutUser } = useContext(AuthContext);
@@ -82,6 +83,7 @@ export default function Board() {
 								{card.title}
 							</Paper>
 						))}
+						<AddCard getBoard={getBoard} list={list} />
 					</Paper>
 				))}
 				<AddList board={board} getBoard={getBoard} />
