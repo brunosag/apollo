@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -12,6 +13,7 @@ export default function CreateBoard({ getBoards }) {
 	const { authTokens } = useContext(AuthContext);
 	const [open, setOpen] = useState(false);
 	const [title, setTitle] = useState('');
+	const navigate = useNavigate();
 
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
@@ -54,7 +56,8 @@ export default function CreateBoard({ getBoards }) {
 					<Button onClick={handleClose}>Cancel</Button>
 					<Button
 						onClick={async () => {
-							await fetch('api/boards/', {
+							const response = await
+							fetch('api/boards/', {
 								method: 'POST',
 								headers: {
 									Authorization:
@@ -63,8 +66,9 @@ export default function CreateBoard({ getBoards }) {
 								},
 								body: JSON.stringify({ title }),
 							});
+							const data = await response.json();
+							navigate(`/${data.id}`);
 							getBoards();
-							handleClose();
 						}}
 					>
 						Create
