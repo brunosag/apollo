@@ -4,9 +4,10 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import AuthContext from '../components/AuthContext';
-import AddList from '../components/AddList';
 import AddCard from '../components/AddCard';
+import AddList from '../components/AddList';
+import AuthContext from '../components/AuthContext';
+import BoardOptions from '../components/BoardOptions';
 
 export default function Board() {
 	const { authTokens, logoutUser } = useContext(AuthContext);
@@ -31,25 +32,31 @@ export default function Board() {
 	}, [id]);
 
 	return (
-		<Container
-			disableGutters
-			maxWidth="false"
-			sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}
-		>
-			<Typography
-				align="center"
-				sx={{ my: 4 }}
-				variant="h4"
+		<Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+			<Container
+				maxWidth
+				sx={{
+					alignItems: 'center',
+					display: 'flex',
+					justifyContent: 'space-between',
+					my: 4,
+				}}
 			>
-				{board && board.title}
-			</Typography>
-			<Box
+				<Typography
+					align="center"
+					variant="h4"
+				>
+					{board && board.title}
+				</Typography>
+				<BoardOptions id={id} />
+			</Container>
+			<Container
+				maxWidth
 				sx={{
 					display: 'flex',
 					flexGrow: 1,
 					gap: 1,
 					overflow: 'auto',
-					px: 2,
 				}}
 			>
 				{board && board.lists.map((list) => (
@@ -87,7 +94,7 @@ export default function Board() {
 					</Paper>
 				))}
 				<AddList board={board} getBoard={getBoard} />
-			</Box>
-		</Container>
+			</Container>
+		</Box>
 	);
 }

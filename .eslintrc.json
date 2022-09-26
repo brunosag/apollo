@@ -16,6 +16,7 @@
 		"react/jsx-indent-props": ["error", "tab"],
 		"react/jsx-indent": ["error", "tab"],
 		"react/jsx-sort-props": [1, { "multiline": "last", "shorthandFirst": true }],
-		"react/prop-types": "off"
+		"react/prop-types": "off",
+		"react/jsx-props-no-spreading": "off"
 	}
 }

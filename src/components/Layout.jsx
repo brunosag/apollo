@@ -1,21 +1,31 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { forwardRef, useContext, useEffect, useState } from 'react';
 import { grey } from '@mui/material/colors';
 import { Outlet, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CloseIcon from '@mui/icons-material/Close';
 import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import MuiAlert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import AuthContext from './AuthContext';
 
+const Alert = forwardRef((props, ref) => (
+	<MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+));
+
 export default function Layout() {
 	const { authTokens, logoutUser } = useContext(AuthContext);
+	const [snackbarOpen, setSnackbarOpen] = useState(false);
 	const [anchorElNav, setAnchorElNav] = useState(null);
 	const [anchorElBoards, setAnchorElBoards] = useState(null);
 	const [boards, setBoards] = useState([]);
@@ -55,6 +65,14 @@ export default function Layout() {
 		setAnchorElBoards(null);
 	};
 
+	const handleSnackbarOpen = () => setSnackbarOpen(true);
+	const handleSnackbarClose = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+		setSnackbarOpen(false);
+	};
+
 	return (
 		<Box sx={{
 			height: '100vh',
@@ -63,7 +81,7 @@ export default function Layout() {
 		}}
 		>
 			<AppBar color="transparent" elevation={0} position="static">
-				<Container maxWidth="lg">
+				<Container maxWidth="false">
 					<Toolbar disableGutters>
 						<Box
 							onClick={() => navigate('/')}
@@ -124,15 +142,41 @@ export default function Layout() {
 									horizontal: 'left',
 								}}
 							>
+								<Box
+									sx={{
+										alignItems: 'center',
+										display: 'flex',
+										justifyContent: 'space-between',
+										px: 1,
+										py: 0.125,
+										width: 288,
+									}}
+								>
+									<Box sx={{ height: 34, width: 34 }} />
+									<Typography color="textSecondary">
+										Navigation
+									</Typography>
+									<IconButton
+										onClick={handleCloseNavMenu}
+										size="small"
+										sx={{ color: 'text.disabled' }}
+									>
+										<CloseIcon />
+									</IconButton>
+								</Box>
+								<Divider sx={{ my: 1 }} />
 								<MenuItem onClick={handleCloseNavMenu}>
 									<Typography textAlign="center">
 										Home
 									</Typography>
 								</MenuItem>
-								<MenuItem onClick={handleCloseNavMenu}>
+								<MenuItem onClick={handleOpenBoardMenu}>
 									<Typography textAlign="center">
 										Boards
 									</Typography>
+									<KeyboardArrowDownIcon
+										sx={{ color: 'text.disabled' }}
+									/>
 								</MenuItem>
 								<MenuItem onClick={logoutUser}>
 									<Typography textAlign="center">
@@ -188,13 +232,32 @@ export default function Layout() {
 									sx={{ mt: '45px' }}
 									anchorOrigin={{
 										vertical: 'top',
-										horizontal: 'right',
-									}}
-									transformOrigin={{
-										vertical: 'top',
-										horizontal: 'right',
+										horizontal: 'left',
 									}}
 								>
+									<Box
+										sx={{
+											alignItems: 'center',
+											display: 'flex',
+											justifyContent: 'space-between',
+											px: 1,
+											py: 0.125,
+											width: 288,
+										}}
+									>
+										<Box sx={{ height: 34, width: 34 }} />
+										<Typography color="textSecondary">
+											Boards
+										</Typography>
+										<IconButton
+											onClick={handleCloseBoardMenu}
+											size="small"
+											sx={{ color: 'text.disabled' }}
+										>
+											<CloseIcon />
+										</IconButton>
+									</Box>
+									<Divider sx={{ my: 1 }} />
 									{boards.map((board) => (
 										<MenuItem
 											key={board.id}
@@ -226,7 +289,32 @@ export default function Layout() {
 					</Toolbar>
 				</Container>
 			</AppBar>
-			<Outlet context={{ boards, getBoards }} />
+
+			<Snackbar
+				autoHideDuration={2000}
+				onClose={handleSnackbarClose}
+				open={snackbarOpen}
+			>
+				<Alert
+					color="primary"
+					onClose={handleSnackbarClose}
+					severity="success"
+					icon={(
+						<CheckCircleOutlineIcon
+							color="primary"
+							fontSize="inherit"
+						/>
+					)}
+					sx={{
+						backgroundColor: 'background.default',
+						width: '100%',
+						color: 'text.primary',
+					}}
+				>
+					Board deleted.
+				</Alert>
+			</Snackbar>
+			<Outlet context={{ boards, getBoards, handleSnackbarOpen }} />
 		</Box>
 	);
 }
