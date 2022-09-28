@@ -2,12 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import AddCard from '../components/AddCard';
 import AddList from '../components/AddList';
 import AuthContext from '../components/AuthContext';
-import BoardOptions from '../components/BoardOptions';
+import BoardOptions from '../components/BoardActions';
+import List from '../components/List';
 
 export default function Board() {
 	const { authTokens, logoutUser } = useContext(AuthContext);
@@ -60,38 +59,7 @@ export default function Board() {
 				}}
 			>
 				{board && board.lists.map((list) => (
-					<Paper
-						elevation={0}
-						key={list.id}
-						sx={{
-							backgroundColor: 'grey.900',
-							flexShrink: 0,
-							height: 'min-content',
-							p: 1,
-							width: 288,
-						}}
-					>
-						<Typography
-							fontWeight={600}
-							sx={{ px: 1, py: 0.5 }}
-						>
-							{list.title}
-						</Typography>
-						{list.cards.map((card) => (
-							<Paper
-								elevation={2}
-								key={card.id}
-								sx={{
-									backgroundColor: 'grey.900',
-									mt: 1,
-									p: 1,
-								}}
-							>
-								{card.title}
-							</Paper>
-						))}
-						<AddCard getBoard={getBoard} list={list} />
-					</Paper>
+					<List getBoard={getBoard} list={list} />
 				))}
 				<AddList board={board} getBoard={getBoard} />
 			</Container>

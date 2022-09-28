@@ -10,8 +10,14 @@ const AuthContext = createContext();
 export default AuthContext;
 
 export function AuthProvider({ children }) {
-	const [authTokens, setAuthTokens] = useState(() => (localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null));
-	const [user, setUser] = useState(() => (localStorage.getItem('authTokens') ? jwtDecode(localStorage.getItem('authTokens')) : null));
+	const [authTokens, setAuthTokens] = useState(() => (
+		localStorage.getItem('authTokens')
+			? JSON.parse(localStorage.getItem('authTokens')) : null
+	));
+	const [user, setUser] = useState(() => (
+		localStorage.getItem('authTokens')
+			? jwtDecode(localStorage.getItem('authTokens')) : null
+	));
 	const [loading, setLoading] = useState(true);
 
 	const navigate = useNavigate();
@@ -37,12 +43,14 @@ export function AuthProvider({ children }) {
 			localStorage.setItem('authTokens', JSON.stringify(data));
 			navigate('/');
 		} else {
-			const alerts = Object.values(data).map((message, index) => Object.create({
-				message,
-				id: index,
-				severity: 'error',
-				open: true,
-			}));
+			const alerts = Object.values(data).map(
+				(message, index) => Object.create({
+					message,
+					id: index,
+					severity: 'error',
+					open: true,
+				}),
+			);
 			setAlerts(alerts);
 		}
 	};
@@ -61,7 +69,9 @@ export function AuthProvider({ children }) {
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ refresh: authTokens ? authTokens.refresh : null }),
+				body: JSON.stringify({
+					refresh: authTokens ? authTokens.refresh : null,
+				}),
 			});
 			const data = await response.json();
 

@@ -1,8 +1,8 @@
 
 <h1 align="center">
     <br>
-    <a href="https://apollo-boards.herokuapp.com/api/">
-        <img src="https://user-images.githubusercontent.com/97703272/184503458-31d3b018-cd41-4337-ab51-fb55a5fa3140.png" alt="Apollo" width="200">
+    <a href="https://apolloboards.tk">
+        <img src="https://user-images.githubusercontent.com/97703272/199108975-6b3b71b3-b80b-42d1-b5a9-cca9ec503efb.png" alt="Apollo" width="200">
     </a>
     <br>
     Apollo

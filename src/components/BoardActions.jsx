@@ -27,7 +27,10 @@ export default function BoardOptions({ id }) {
 	const handleClick = (e) => setAnchorEl(e.currentTarget);
 	const handleClose = () => setAnchorEl(null);
 
-	const handleDialogOpen = () => setDialogOpen(true);
+	const handleDialogOpen = () => {
+		setDialogOpen(true);
+		handleClose();
+	};
 	const handleDialogClose = () => setDialogOpen(false);
 
 	const deleteBoard = async () => {
@@ -43,11 +46,11 @@ export default function BoardOptions({ id }) {
 	return (
 		<Box>
 			<Button
-				aria-controls={open ? 'board-options-menu' : undefined}
+				aria-controls={open ? 'board-actions-menu' : undefined}
 				aria-expanded={open ? 'true' : undefined}
 				aria-haspopup="true"
 				color="inherit"
-				id="board-options-button"
+				id="board-actions-button"
 				onClick={handleClick}
 				size="small"
 				variant="contained"
@@ -68,12 +71,12 @@ export default function BoardOptions({ id }) {
 
 			<Menu
 				anchorEl={anchorEl}
-				id="board-options-menu"
+				id="board-actions-menu"
 				onClose={handleClose}
 				open={open}
 				sx={{ mt: 1 }}
 				MenuListProps={{
-					'aria-labelledby': 'board-options-button',
+					'aria-labelledby': 'board-actions-button',
 				}}
 				anchorOrigin={{
 					vertical: 'bottom',
@@ -95,7 +98,7 @@ export default function BoardOptions({ id }) {
 					}}
 				>
 					<Box sx={{ height: 34, width: 34 }} />
-					<Typography color="textSecondary">Board options</Typography>
+					<Typography color="textSecondary">Board actions</Typography>
 					<IconButton
 						onClick={handleClose}
 						size="small"
