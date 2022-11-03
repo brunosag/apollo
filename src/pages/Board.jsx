@@ -21,9 +21,11 @@ export default function Board() {
 
 		if (response.status === 200) {
 			setBoard(data);
-		} else if (response.statusText === 'Unauthorized') {
+			return data;
+		} if (response.statusText === 'Unauthorized') {
 			logoutUser();
 		}
+		return null;
 	};
 
 	useEffect(() => {
@@ -59,7 +61,12 @@ export default function Board() {
 				}}
 			>
 				{board && board.lists.map((list) => (
-					<List getBoard={getBoard} list={list} />
+					<List
+						board={board}
+						getBoard={getBoard}
+						key={list.id}
+						list={list}
+					/>
 				))}
 				<AddList board={board} getBoard={getBoard} />
 			</Container>

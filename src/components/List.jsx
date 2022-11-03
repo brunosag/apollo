@@ -32,7 +32,20 @@ export default function List({ getBoard, list }) {
 			headers: { Authorization: `Bearer ${String(authTokens.access)}` },
 		});
 		handleClose();
-		getBoard();
+		const board = await getBoard();
+		const listsLength = board.lists.length;
+		for (let i = list.order - 1; i < listsLength; i += 1) {
+			const listId = board.lists[i].id;
+			const listOrder = board.lists[i].order;
+			fetch(`api/lists/${listId}`, {
+				method: 'PATCH',
+				headers: {
+					Authorization: `Bearer ${String(authTokens.access)}`,
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ order: listOrder - 1 }),
+			});
+		}
 	};
 
 	const handleDialogOpen = () => {
@@ -48,7 +61,6 @@ export default function List({ getBoard, list }) {
 	return (
 		<Paper
 			elevation={0}
-			key={list.id}
 			sx={{
 				backgroundColor: 'grey.900',
 				flexShrink: 0,
