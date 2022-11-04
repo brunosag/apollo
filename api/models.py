@@ -4,7 +4,7 @@ from django.db import models
 
 class Board(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='boards')
-    title = models.CharField(max_length=32)
+    title = models.CharField(max_length=128)
     last_access = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -16,7 +16,7 @@ class Board(models.Model):
 
 class List(models.Model):
     board = models.ForeignKey(Board, on_delete=models.CASCADE, related_name='lists')
-    title = models.CharField(max_length=32)
+    title = models.CharField(max_length=128)
     order = models.SmallIntegerField()
 
     class Meta:
@@ -28,7 +28,7 @@ class List(models.Model):
 
 class Card(models.Model):
     list = models.ForeignKey(List, on_delete=models.CASCADE, related_name='cards')
-    title = models.CharField(max_length=64)
+    title = models.CharField(max_length=128)
     order = models.SmallIntegerField()
 
     class Meta:

@@ -37,7 +37,13 @@ export default function Home() {
 								width: '100%',
 							}}
 						>
-							<Typography variant="h6">
+							<Typography
+								variant="h6"
+								sx={{
+									overflow: 'hidden',
+									textOverflow: 'ellipsis',
+								}}
+							>
 								{board.title}
 							</Typography>
 						</Button>

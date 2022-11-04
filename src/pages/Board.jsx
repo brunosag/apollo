@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import AddList from '../components/AddList';
 import AuthContext from '../components/AuthContext';
 import BoardOptions from '../components/BoardActions';
+import BoardTitle from '../components/BoardTitle';
 import List from '../components/List';
 
 export default function Board() {
@@ -35,29 +35,26 @@ export default function Board() {
 	return (
 		<Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
 			<Container
-				maxWidth
+				maxWidth="false"
 				sx={{
 					alignItems: 'center',
 					display: 'flex',
+					gap: 4,
 					justifyContent: 'space-between',
-					my: 4,
+					py: 4,
 				}}
 			>
-				<Typography
-					align="center"
-					variant="h4"
-				>
-					{board && board.title}
-				</Typography>
+				{board && <BoardTitle board={board} getBoard={getBoard} />}
 				<BoardOptions id={id} />
 			</Container>
 			<Container
-				maxWidth
+				maxWidth="false"
 				sx={{
 					display: 'flex',
 					flexGrow: 1,
 					gap: 1,
 					overflow: 'auto',
+					pb: 2,
 				}}
 			>
 				{board && board.lists.map((list) => (
