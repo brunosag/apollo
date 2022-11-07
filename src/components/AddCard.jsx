@@ -71,7 +71,7 @@ export default function AddCard({ getBoard, list }) {
 	};
 
 	return (
-		<Box sx={{ height: 'min-content' }}>
+		<Box sx={{ height: 'min-content', px: 1 }}>
 			<Button
 				disableRipple
 				fullWidth
@@ -84,7 +84,7 @@ export default function AddCard({ getBoard, list }) {
 					},
 					display: open ? 'none' : 'inline-flex',
 					justifyContent: 'start',
-					mt: 1,
+					mb: 1,
 					px: 1,
 					py: 0.5,
 					textTransform: 'none',

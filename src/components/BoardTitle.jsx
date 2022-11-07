@@ -93,7 +93,6 @@ export default function BoardTitle({ board, getBoard }) {
 				</Typography>
 			</Button>
 			<TextField
-				autoFocus
 				onBlur={handleClose}
 				onChange={handleChange}
 				onKeyUp={handleKeyUp}
@@ -101,7 +100,7 @@ export default function BoardTitle({ board, getBoard }) {
 				size="small"
 				value={title}
 				inputProps={{
-					maxLength: 64,
+					maxLength: 128,
 					sx: {
 						fontSize: '2.125rem',
 						height: 'auto',
