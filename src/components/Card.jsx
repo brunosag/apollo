@@ -1,21 +1,43 @@
 /* eslint-disable react/jsx-no-duplicate-props */
 import React, { useContext, useRef, useState } from 'react';
 import { useDetectClickOutside } from 'react-detect-click-outside';
-import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import ButtonBase from '@mui/material/ButtonBase';
-import CloseIcon from '@mui/icons-material/Close';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
 import AuthContext from './AuthContext';
 
-export default function AddCard({ getBoard, list }) {
+export default function Card({ card }) {
 	const { authTokens } = useContext(AuthContext);
 	const [open, setOpen] = useState(false);
-	const [title, setTitle] = useState('');
+	const [title, setTitle] = useState(card.title);
+	const titleInput = useRef();
 	const openButton = useRef();
+
+	const getCard = async () => {
+		const response = await
+		fetch(`api/cards/${card.id}`, {
+			method: 'GET',
+			headers: { Authorization: `Bearer ${String(authTokens.access)}` },
+		});
+		const data = await response.json();
+		return data;
+	};
+
+	const handleOpen = async () => {
+		await setOpen(true);
+		const inputElement = titleInput.current.querySelector('textarea');
+		inputElement.focus();
+		inputElement.select();
+	};
+
+	const handleClose = async () => {
+		if (title !== card.title) {
+			const newCard = await getCard();
+			setTitle(newCard.title);
+		}
+		setOpen(false);
+	};
 
 	const handleChange = (e) => {
 		if (!e.target.value.includes('\n')) {
@@ -23,91 +45,61 @@ export default function AddCard({ getBoard, list }) {
 		}
 	};
 
-	const addCard = async () => {
+	const updateTitle = async () => {
 		if (title.trim()) {
-			await fetch('api/cards/', {
-				method: 'POST',
+			await fetch(`api/cards/${card.id}`, {
+				method: 'PATCH',
 				headers: {
 					Authorization: `Bearer ${String(authTokens.access)}`,
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({
-					title,
-					list: list.id,
-					order: list.cards.length + 1,
-				}),
+				body: JSON.stringify({ title }),
 			});
-			await getBoard();
-			setTitle('');
 		}
-	};
-
-	const handleClose = () => {
-		setOpen(false);
-	};
-
-	const inputWrapper = useDetectClickOutside({
-		disableKeys: true,
-		onTriggered: async (e) => {
-			if (!openButton.current.contains(e.target)) {
-				await addCard();
-				handleClose();
-			}
-		},
-	});
-
-	const handleOpen = async () => {
-		await setOpen(true);
-		const titleInput = await inputWrapper.current.querySelector('textarea');
-		titleInput.focus();
-		titleInput.select();
-	};
-
-	const handleConfirm = async () => {
-		await addCard();
-		handleOpen();
+		handleClose();
 	};
 
 	const handleKeyUp = (e) => {
 		if (e.key === 'Escape') {
 			handleClose();
 		} else if (e.key === 'Enter') {
-			handleConfirm();
+			updateTitle();
 		}
 	};
 
+	const inputWrapper = useDetectClickOutside({
+		disableKeys: true,
+		onTriggered: (e) => {
+			if (open && !openButton.current.contains(e.target)) {
+				handleClose();
+			}
+		},
+	});
+
 	return (
-		<Box sx={{ height: 'min-content', px: 1 }}>
+		<div>
 			<Button
 				disableRipple
-				fullWidth
 				color="inherit"
+				component={Paper}
+				elevation={2}
 				onClick={handleOpen}
 				ref={openButton}
 				sx={{
-					':hover': {
-						backgroundColor: '#2a2a2a',
-					},
-					display: open ? 'none' : 'inline-flex',
+					backgroundColor: 'grey.900',
+					display: open ? 'none' : 'block',
+					fontSize: '1rem',
+					fontWeight: 400,
 					justifyContent: 'start',
+					lineHeight: 1.5,
 					mb: 1,
-					px: 1,
-					py: 0.5,
+					mx: 1,
+					p: 1,
 					textTransform: 'none',
+					wordBreak: 'break-word',
 				}}
 			>
-				<Box sx={{
-					alignItems: 'center',
-					display: 'flex',
-					gap: 0.5,
-				}}
-				>
-					<AddIcon
-						fontSize="small"
-						sx={{ color: 'grey.600' }}
-					/>
-					<Typography color="textSecondary">Add a card</Typography>
-				</Box>
+				{title}
 			</Button>
 
 			<Paper
@@ -117,6 +109,7 @@ export default function AddCard({ getBoard, list }) {
 					backgroundColor: 'grey.900',
 					display: open ? 'block' : 'none',
 					mb: 1,
+					px: 1,
 				}}
 			>
 				<TextField
@@ -125,14 +118,16 @@ export default function AddCard({ getBoard, list }) {
 					InputProps={{ sx: { p: 0 } }}
 					onChange={handleChange}
 					onKeyUp={handleKeyUp}
-					placeholder="Card title"
+					ref={titleInput}
 					size="small"
+					sx={{ backgroundColor: 'grey.900' }}
 					value={title}
 					variant="filled"
 					inputProps={{
 						maxLength: 128,
 						sx: {
 							letterSpacing: '0.02857em',
+							lineHeight: 1.5,
 							p: 1,
 						},
 					}}
@@ -146,20 +141,14 @@ export default function AddCard({ getBoard, list }) {
 					}}
 				>
 					<Button
-						onClick={handleConfirm}
+						onClick={updateTitle}
 						size="small"
 						variant="contained"
 					>
-						Add card
+						Save
 					</Button>
-					<ButtonBase
-						disableTouchRipple
-						onClick={handleClose}
-					>
-						<CloseIcon sx={{ color: 'grey.500', fontSize: 26 }} />
-					</ButtonBase>
 				</Box>
 			</Paper>
-		</Box>
+		</div>
 	);
 }

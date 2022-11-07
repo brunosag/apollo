@@ -123,6 +123,7 @@ export default function AddList({ board, getBoard }) {
 					autoFocus
 					fullWidth
 					multiline
+					inputProps={{ maxLength: 128 }}
 					label="List title"
 					onChange={handleChange}
 					onKeyUp={handleKeyUp}

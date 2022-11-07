@@ -4,9 +4,10 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import ListActions from './ListActions';
-import AuthContext from './AuthContext';
 import AddCard from './AddCard';
+import AuthContext from './AuthContext';
+import Card from './Card';
+import ListActions from './ListActions';
 
 export default function List({ getBoard, list }) {
 	const { authTokens } = useContext(AuthContext);
@@ -43,9 +44,7 @@ export default function List({ getBoard, list }) {
 	};
 
 	const handleKeyUp = (e) => {
-		if (e.key === 'Escape') {
-			handleClose();
-		} else if (e.key === 'Enter') {
+		if (e.key === 'Enter' || e.key === 'Escape') {
 			handleClose();
 		}
 	};
@@ -121,18 +120,7 @@ export default function List({ getBoard, list }) {
 				/>
 			</Box>
 			{list.cards.map((card) => (
-				<Paper
-					elevation={2}
-					key={card.id}
-					sx={{
-						backgroundColor: 'grey.900',
-						mb: 1,
-						mx: 1,
-						p: 1,
-					}}
-				>
-					{card.title}
-				</Paper>
+				<Card card={card} getBoard={getBoard} key={card.id} />
 			))}
 			<AddCard getBoard={getBoard} list={list} />
 		</Paper>
