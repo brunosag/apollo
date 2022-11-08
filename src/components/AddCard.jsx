@@ -141,7 +141,7 @@ export default function AddCard({ getBoard, list }) {
 					sx={{
 						alignItems: 'center',
 						display: 'flex',
-						gap: 1,
+						justifyContent: 'space-between',
 						mt: 1,
 					}}
 				>
@@ -152,12 +152,23 @@ export default function AddCard({ getBoard, list }) {
 					>
 						Add card
 					</Button>
-					<ButtonBase
-						disableTouchRipple
+					<Button
+						color="inherit"
 						onClick={handleClose}
+						size="small"
+						sx={{
+							':hover': {
+								backgroundColor: '#2a2a2a',
+							},
+							minWidth: 0,
+							padding: 0.75,
+						}}
 					>
-						<CloseIcon sx={{ color: 'grey.500', fontSize: 26 }} />
-					</ButtonBase>
+						<CloseIcon
+							fontSize="small"
+							sx={{ color: 'grey.600' }}
+						/>
+					</Button>
 				</Box>
 			</Paper>
 		</Box>

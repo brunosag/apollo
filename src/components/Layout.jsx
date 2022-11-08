@@ -165,7 +165,11 @@ export default function Layout() {
 									</IconButton>
 								</Box>
 								<Divider sx={{ my: 1 }} />
-								<MenuItem onClick={handleCloseNavMenu}>
+								<MenuItem onClick={() => {
+									navigate('/');
+									handleCloseNavMenu();
+								}}
+								>
 									<Typography textAlign="center">
 										Home
 									</Typography>

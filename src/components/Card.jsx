@@ -3,11 +3,12 @@ import React, { useContext, useRef, useState } from 'react';
 import { useDetectClickOutside } from 'react-detect-click-outside';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import AuthContext from './AuthContext';
 
-export default function Card({ card }) {
+export default function Card({ card, getBoard }) {
 	const { authTokens } = useContext(AuthContext);
 	const [open, setOpen] = useState(false);
 	const [title, setTitle] = useState(card.title);
@@ -76,6 +77,14 @@ export default function Card({ card }) {
 		},
 	});
 
+	const deleteCard = async () => {
+		await fetch(`api/cards/${card.id}`, {
+			method: 'DELETE',
+			headers: { Authorization: `Bearer ${String(authTokens.access)}` },
+		});
+		getBoard();
+	};
+
 	return (
 		<div>
 			<Button
@@ -136,7 +145,7 @@ export default function Card({ card }) {
 					sx={{
 						alignItems: 'center',
 						display: 'flex',
-						gap: 1,
+						justifyContent: 'space-between',
 						mt: 1,
 					}}
 				>
@@ -146,6 +155,24 @@ export default function Card({ card }) {
 						variant="contained"
 					>
 						Save
+					</Button>
+					<Button
+						color="inherit"
+						onClick={deleteCard}
+						size="small"
+						title="Delete card"
+						sx={{
+							':hover': {
+								backgroundColor: '#2a2a2a',
+							},
+							minWidth: 0,
+							padding: 0.75,
+						}}
+					>
+						<DeleteIcon
+							fontSize="small"
+							sx={{ color: 'grey.600' }}
+						/>
 					</Button>
 				</Box>
 			</Paper>

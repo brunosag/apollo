@@ -15,6 +15,7 @@ export default function List({ getBoard, list }) {
 	const [title, setTitle] = useState(list.title);
 	const titleInput = useRef();
 	const listActions = useRef();
+	const deleteListModal = useRef();
 
 	const updateTitle = async () => {
 		if (title.trim()) {
@@ -57,7 +58,7 @@ export default function List({ getBoard, list }) {
 
 	const handleClick = (e) => {
 		if (!listActions.current.contains(e.target)
-			&& !e.target.ariaHidden === true) {
+		&& !deleteListModal.current.contains(e.target)) {
 			handleOpen();
 		}
 	};
@@ -115,6 +116,7 @@ export default function List({ getBoard, list }) {
 				/>
 				<ListActions
 					actionsButton={listActions}
+					deleteModal={deleteListModal}
 					getBoard={getBoard}
 					list={list}
 				/>

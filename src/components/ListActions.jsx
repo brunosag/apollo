@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
@@ -15,7 +15,9 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Typography from '@mui/material/Typography';
 import AuthContext from './AuthContext';
 
-export default function ListActions({ actionsButton, getBoard, list }) {
+export default function ListActions(
+	{ actionsButton, deleteModal, getBoard, list },
+) {
 	const { authTokens } = useContext(AuthContext);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [dialogOpen, setDialogOpen] = useState(false);
@@ -125,6 +127,7 @@ export default function ListActions({ actionsButton, getBoard, list }) {
 				aria-labelledby="alert-dialog-title"
 				onClose={handleDialogClose}
 				open={dialogOpen}
+				ref={deleteModal}
 			>
 				<DialogTitle id="alert-dialog-title">
 					Delete list?
