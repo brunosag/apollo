@@ -18,6 +18,37 @@ export default function CreateBoard({ getBoards }) {
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
 
+	const createBoard = async () => {
+		if (title.trim()) {
+			const response = await fetch('api/boards/', {
+				method: 'POST',
+				headers: {
+					Authorization:
+						`Bearer ${String(authTokens.access)}`,
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ title }),
+			});
+			const data = await response.json();
+			navigate(`/${data.id}`);
+			getBoards();
+		}
+	};
+
+	const handleKeyUp = (e) => {
+		if (e.key === 'Escape') {
+			handleClose();
+		} else if (e.key === 'Enter') {
+			createBoard();
+		}
+	};
+
+	const handleChange = async (e) => {
+		if (!e.target.value.includes('\n')) {
+			setTitle(e.target.value);
+		}
+	};
+
 	return (
 		<div>
 			<Button
@@ -48,31 +79,15 @@ export default function CreateBoard({ getBoards }) {
 						label="Board title"
 						margin="dense"
 						name="title"
-						onChange={(e) => setTitle(e.target.value)}
+						onChange={handleChange}
+						onKeyUp={handleKeyUp}
+						value={title}
 						variant="standard"
 					/>
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleClose}>Cancel</Button>
-					<Button
-						onClick={async () => {
-							const response = await
-							fetch('api/boards/', {
-								method: 'POST',
-								headers: {
-									Authorization:
-										`Bearer ${String(authTokens.access)}`,
-									'Content-Type': 'application/json',
-								},
-								body: JSON.stringify({ title }),
-							});
-							const data = await response.json();
-							navigate(`/${data.id}`);
-							getBoards();
-						}}
-					>
-						Create
-					</Button>
+					<Button onClick={createBoard}>Create</Button>
 				</DialogActions>
 			</Dialog>
 		</div>

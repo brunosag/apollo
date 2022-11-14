@@ -48,9 +48,7 @@ export default function BoardTitle({ board, getBoard }) {
 	};
 
 	const handleKeyUp = (e) => {
-		if (e.key === 'Escape') {
-			handleClose();
-		} else if (e.key === 'Enter') {
+		if (e.key === 'Escape' || e.key === 'Enter') {
 			handleClose();
 		}
 	};

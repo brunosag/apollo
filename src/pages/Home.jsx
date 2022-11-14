@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -9,6 +9,10 @@ import CreateBoard from '../components/CreateBoard';
 export default function Home() {
 	const { boards, getBoards } = useOutletContext();
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		getBoards();
+	}, []);
 
 	return (
 		<Container maxWidth="md">
