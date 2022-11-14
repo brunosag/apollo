@@ -47,7 +47,7 @@ export default function AddList({ board, getBoard }) {
 				body: JSON.stringify({
 					title,
 					board: board.id,
-					order: board.lists.length + 1,
+					index: board.lists.length,
 				}),
 			});
 			await getBoard();

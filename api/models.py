@@ -8,7 +8,7 @@ class Board(models.Model):
     last_access = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['id']
+        ordering = ['-last_access']
 
     def __str__(self):
         return f'{self.user} | {self.title}'
@@ -17,10 +17,10 @@ class Board(models.Model):
 class List(models.Model):
     board = models.ForeignKey(Board, on_delete=models.CASCADE, related_name='lists')
     title = models.CharField(max_length=128)
-    order = models.SmallIntegerField()
+    index = models.SmallIntegerField()
 
     class Meta:
-        ordering = ['id']
+        ordering = ['index']
 
     def __str__(self):
         return f'{self.board.user} | {self.title}'
@@ -29,10 +29,10 @@ class List(models.Model):
 class Card(models.Model):
     list = models.ForeignKey(List, on_delete=models.CASCADE, related_name='cards')
     title = models.CharField(max_length=128)
-    order = models.SmallIntegerField()
+    index = models.SmallIntegerField()
 
     class Meta:
-        ordering = ['id']
+        ordering = ['index']
 
     def __str__(self):
         return f'{self.list.board.user} | {self.title}'

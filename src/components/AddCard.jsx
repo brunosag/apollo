@@ -4,7 +4,6 @@ import { useDetectClickOutside } from 'react-detect-click-outside';
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import ButtonBase from '@mui/material/ButtonBase';
 import CloseIcon from '@mui/icons-material/Close';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
@@ -34,7 +33,7 @@ export default function AddCard({ getBoard, list }) {
 				body: JSON.stringify({
 					title,
 					list: list.id,
-					order: list.cards.length + 1,
+					index: list.cards.length,
 				}),
 			});
 			await getBoard();

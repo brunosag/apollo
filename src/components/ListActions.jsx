@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
@@ -13,12 +13,16 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Typography from '@mui/material/Typography';
-import AuthContext from './AuthContext';
 
 export default function ListActions(
-	{ actionsButton, deleteModal, getBoard, list },
+	{
+		deleteList,
+		list,
+		listActionsDialogRef,
+		listActionsMenuRef,
+		listActionsRef,
+	},
 ) {
-	const { authTokens } = useContext(AuthContext);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const open = Boolean(anchorEl);
@@ -26,40 +30,23 @@ export default function ListActions(
 	const handleClick = (e) => setAnchorEl(e.currentTarget);
 	const handleClose = () => setAnchorEl(null);
 
-	const deleteList = async () => {
-		await fetch(`api/lists/${list.id}`, {
-			method: 'DELETE',
-			headers: { Authorization: `Bearer ${String(authTokens.access)}` },
-		});
+	const handleDelete = () => {
+		deleteList(list);
 		handleClose();
-		const board = await getBoard();
-		const listsLength = board.lists.length;
-		for (let i = list.order - 1; i < listsLength; i += 1) {
-			const listId = board.lists[i].id;
-			const listOrder = board.lists[i].order;
-			fetch(`api/lists/${listId}`, {
-				method: 'PATCH',
-				headers: {
-					Authorization: `Bearer ${String(authTokens.access)}`,
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ order: listOrder - 1 }),
-			});
-		}
 	};
 
+	const handleDialogClose = () => setDialogOpen(false);
 	const handleDialogOpen = () => {
 		if (list.cards.length !== 0) {
 			setDialogOpen(true);
 		} else {
-			deleteList();
+			handleDelete();
 		}
 		handleClose();
 	};
-	const handleDialogClose = () => setDialogOpen(false);
 
 	return (
-		<div>
+		<div ref={listActionsRef}>
 			<Button
 				aria-controls={open ? 'list-actions-menu' : undefined}
 				aria-expanded={open ? 'true' : undefined}
@@ -67,7 +54,6 @@ export default function ListActions(
 				color="inherit"
 				id="list-actions-button"
 				onClick={handleClick}
-				ref={actionsButton}
 				size="small"
 				sx={{
 					':hover': {
@@ -88,6 +74,7 @@ export default function ListActions(
 				id="list-actions-menu"
 				onClose={handleClose}
 				open={open}
+				ref={listActionsMenuRef}
 				sx={{ mt: 1 }}
 				MenuListProps={{
 					'aria-labelledby': 'list-actions-button',
@@ -127,7 +114,7 @@ export default function ListActions(
 				aria-labelledby="alert-dialog-title"
 				onClose={handleDialogClose}
 				open={dialogOpen}
-				ref={deleteModal}
+				ref={listActionsDialogRef}
 			>
 				<DialogTitle id="alert-dialog-title">
 					Delete list?
@@ -149,7 +136,7 @@ export default function ListActions(
 					<Button
 						autoFocus
 						color="error"
-						onClick={deleteList}
+						onClick={handleDelete}
 					>
 						Delete
 					</Button>

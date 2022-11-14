@@ -1,8 +1,9 @@
+from .models import Board, List, Card
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
+from drf_writable_nested.serializers import WritableNestedModelSerializer
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import Board, List, Card
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -47,21 +48,20 @@ class RegisterSerializer(serializers.ModelSerializer):
 class CardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Card
-        fields = ['id', 'list', 'title', 'order']
+        fields = '__all__'
 
 
-class ListSerializer(serializers.ModelSerializer):
-    cards = CardSerializer(many=True, read_only=True)
+class ListSerializer(WritableNestedModelSerializer):
+    cards = CardSerializer(many=True, required=False)
 
     class Meta:
         model = List
-        fields = ['id', 'board', 'title', 'order', 'cards']
+        fields = '__all__'
 
 
-class BoardSeriazlier(serializers.ModelSerializer):
-    lists = ListSerializer(many=True, read_only=True)
+class BoardSeriazlier(WritableNestedModelSerializer):
+    lists = ListSerializer(many=True, required=False)
 
     class Meta:
         model = Board
-        fields = ['id', 'title', 'last_access', 'lists']
-        read_only_fields = ['last_access']
+        fields = ['id', 'title', 'lists']

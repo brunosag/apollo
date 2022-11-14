@@ -5,6 +5,7 @@ django-cors-headers
 django-environ
 djangorestframework
 djangorestframework-simplejwt
+drf-writable-nested
 faker
 gunicorn
 psycopg2

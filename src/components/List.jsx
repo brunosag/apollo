@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-no-duplicate-props */
 import React, { useContext, useRef, useState } from 'react';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
@@ -9,13 +10,16 @@ import AuthContext from './AuthContext';
 import Card from './Card';
 import ListActions from './ListActions';
 
-export default function List({ getBoard, list }) {
+export default function List({
+	deleteCard, deleteList, getBoard, getList, list,
+}) {
 	const { authTokens } = useContext(AuthContext);
 	const [open, setOpen] = useState(false);
 	const [title, setTitle] = useState(list.title);
 	const titleInput = useRef();
 	const listActions = useRef();
-	const deleteListModal = useRef();
+	const listActionsMenu = useRef();
+	const listActionsDialog = useRef();
 
 	const updateTitle = async () => {
 		if (title.trim()) {
@@ -28,8 +32,8 @@ export default function List({ getBoard, list }) {
 				body: JSON.stringify({ title }),
 			});
 		}
-		const newBoard = await getBoard();
-		setTitle(newBoard.lists[list.order - 1].title);
+		const newList = await getList(list.id);
+		setTitle(newList.title);
 	};
 
 	const handleOpen = async () => {
@@ -57,10 +61,14 @@ export default function List({ getBoard, list }) {
 	};
 
 	const handleClick = (e) => {
-		if (!listActions.current.contains(e.target)
-		&& !deleteListModal.current.contains(e.target)) {
-			handleOpen();
+		if (listActions.current.contains(e.target)) return;
+		if (listActionsMenu.current) {
+			if (listActionsMenu.current.contains(e.target)) return;
 		}
+		if (listActionsDialog.current) {
+			if (listActionsDialog.current.contains(e.target)) return;
+		}
+		handleOpen();
 	};
 
 	return (
@@ -115,16 +123,43 @@ export default function List({ getBoard, list }) {
 					}}
 				/>
 				<ListActions
-					actionsButton={listActions}
-					deleteModal={deleteListModal}
+					deleteList={deleteList}
 					getBoard={getBoard}
 					list={list}
+					listActionsDialogRef={listActionsDialog}
+					listActionsMenuRef={listActionsMenu}
+					listActionsRef={listActions}
 				/>
 			</Box>
-			{list.cards.map((card) => (
-				<Card card={card} getBoard={getBoard} key={card.id} />
-			))}
-			<AddCard getBoard={getBoard} list={list} />
+			<Droppable droppableId={String(list.id)}>
+				{(provided) => (
+					<div
+						{...provided.droppableProps}
+						ref={provided.innerRef}
+					>
+						{list.cards.map((card, index) => (
+							<Draggable
+								draggableId={String(card.id)}
+								index={index}
+								key={card.id}
+							>
+								{(providedDraggable) => (
+									<Card
+										card={card}
+										deleteCard={deleteCard}
+										provided={providedDraggable}
+									/>
+								)}
+							</Draggable>
+						))}
+						{provided.placeholder}
+						<AddCard
+							getBoard={getBoard}
+							list={list}
+						/>
+					</div>
+				)}
+			</Droppable>
 		</Paper>
 	);
 }

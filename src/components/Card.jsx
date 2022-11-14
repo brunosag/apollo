@@ -8,12 +8,14 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import AuthContext from './AuthContext';
 
-export default function Card({ card, getBoard }) {
+export default function Card({ card, deleteCard, provided }) {
 	const { authTokens } = useContext(AuthContext);
 	const [open, setOpen] = useState(false);
 	const [title, setTitle] = useState(card.title);
 	const titleInput = useRef();
 	const openButton = useRef();
+
+	const handleDelete = () => deleteCard(card);
 
 	const getCard = async () => {
 		const response = await
@@ -77,16 +79,16 @@ export default function Card({ card, getBoard }) {
 		},
 	});
 
-	const deleteCard = async () => {
-		await fetch(`api/cards/${card.id}`, {
-			method: 'DELETE',
-			headers: { Authorization: `Bearer ${String(authTokens.access)}` },
-		});
-		getBoard();
-	};
-
 	return (
-		<div>
+		<Box
+			ref={provided.innerRef}
+			{...provided.dragHandleProps}
+			{...provided.draggableProps}
+			sx={{
+				mb: 1,
+				mx: 1,
+			}}
+		>
 			<Button
 				disableRipple
 				color="inherit"
@@ -101,8 +103,6 @@ export default function Card({ card, getBoard }) {
 					fontWeight: 400,
 					justifyContent: 'start',
 					lineHeight: 1.5,
-					mb: 1,
-					mx: 1,
 					p: 1,
 					textTransform: 'none',
 					wordBreak: 'break-word',
@@ -117,8 +117,6 @@ export default function Card({ card, getBoard }) {
 				sx={{
 					backgroundColor: 'grey.900',
 					display: open ? 'block' : 'none',
-					mb: 1,
-					px: 1,
 				}}
 			>
 				<TextField
@@ -158,7 +156,7 @@ export default function Card({ card, getBoard }) {
 					</Button>
 					<Button
 						color="inherit"
-						onClick={deleteCard}
+						onClick={handleDelete}
 						size="small"
 						title="Delete card"
 						sx={{
@@ -176,6 +174,6 @@ export default function Card({ card, getBoard }) {
 					</Button>
 				</Box>
 			</Paper>
-		</div>
+		</Box>
 	);
 }
