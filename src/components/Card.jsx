@@ -8,7 +8,7 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import AuthContext from './AuthContext';
 
-export default function Card({ card, deleteCard, provided }) {
+export default function Card({ card, deleteCard, getBoard, provided }) {
 	const { authTokens } = useContext(AuthContext);
 	const [open, setOpen] = useState(false);
 	const [title, setTitle] = useState(card.title);
@@ -60,6 +60,7 @@ export default function Card({ card, deleteCard, provided }) {
 			});
 		}
 		handleClose();
+		getBoard();
 	};
 
 	const handleKeyUp = (e) => {

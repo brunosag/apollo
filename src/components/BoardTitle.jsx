@@ -17,7 +17,11 @@ export default function BoardTitle({ board, getBoard }) {
 
 	useEffect(() => {
 		setTitleWidth(titleSpan.current.offsetWidth);
-	}, [title]);
+	}, []);
+
+	useEffect(() => {
+		setTitle(board.title);
+	}, [board]);
 
 	const updateTitle = async () => {
 		if (title.trim()) {
@@ -27,7 +31,7 @@ export default function BoardTitle({ board, getBoard }) {
 					Authorization: `Bearer ${String(authTokens.access)}`,
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ title }),
+				body: JSON.stringify({ title: title.trim() }),
 			});
 		}
 		const newBoard = await getBoard();
@@ -120,6 +124,7 @@ export default function BoardTitle({ board, getBoard }) {
 				variant="h4"
 				sx={{
 					opacity: 0,
+					whiteSpace: 'pre-wrap',
 					position: 'absolute',
 					px: 1,
 					py: 0.75,

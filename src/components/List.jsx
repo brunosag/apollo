@@ -147,6 +147,7 @@ export default function List({
 									<Card
 										card={card}
 										deleteCard={deleteCard}
+										getBoard={getBoard}
 										provided={providedDraggable}
 									/>
 								)}
