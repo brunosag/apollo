@@ -55,6 +55,39 @@ export function AuthProvider({ children }) {
 		}
 	};
 
+	const loginDemoUser = async (e, setAlerts) => {
+		e.preventDefault();
+
+		const response = await fetch('api/token/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				username: 'demouser',
+				password: 'demouser',
+			}),
+		});
+		const data = await response.json();
+
+		if (response.status === 200) {
+			setAuthTokens(data);
+			setUser(jwtDecode(data.access));
+			localStorage.setItem('authTokens', JSON.stringify(data));
+			navigate('/');
+		} else {
+			const alerts = Object.values(data).map(
+				(message, index) => Object.create({
+					message,
+					id: index,
+					severity: 'error',
+					open: true,
+				}),
+			);
+			setAlerts(alerts);
+		}
+	};
+
 	const logoutUser = () => {
 		setAuthTokens(null);
 		setUser(null);
@@ -92,6 +125,7 @@ export function AuthProvider({ children }) {
 	const contextData = {
 		user,
 		authTokens,
+		loginDemoUser,
 		loginUser,
 		logoutUser,
 	};

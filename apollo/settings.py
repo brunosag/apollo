@@ -34,7 +34,7 @@ SECRET_KEY = env('SECRET_KEY', default='f5e6a855d9b25dfc0222922bd799d849')
 DEBUG = 'RENDER' not in os.environ
 
 # https://docs.djangoproject.com/en/3.0/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['apolloboards.tk', 'localhost']
+ALLOWED_HOSTS = ['apolloboards.tk', 'localhost', '127.0.0.1']
 
 RENDER_EXTERNAL_HOSTNAME = env('RENDER_EXTERNAL_HOSTNAME', default=None)
 
@@ -45,16 +45,16 @@ if RENDER_EXTERNAL_HOSTNAME:
 # Application definition
 
 INSTALLED_APPS = [
+    'api',
+    'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api',
-    'rest_framework',
-    'rest_framework_simplejwt.token_blacklist',
-    'corsheaders',
 ]
 
 REST_FRAMEWORK = {
@@ -178,7 +178,6 @@ STATICFILES_DIRS = [
 ]
 
 if not DEBUG:
-
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

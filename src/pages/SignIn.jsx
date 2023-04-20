@@ -34,7 +34,7 @@ function Copyright({ sx }) {
 }
 
 export default function SignIn() {
-	const { loginUser } = useContext(AuthContext);
+	const { loginUser, loginDemoUser } = useContext(AuthContext);
 	const [alerts, setAlerts] = useState([]);
 	const navigate = useNavigate();
 
@@ -68,7 +68,7 @@ export default function SignIn() {
 						height: '100vh',
 						justifyContent: 'center',
 						px: 4,
-						py: 8,
+						py: 4,
 					}}
 				>
 					<Avatar
@@ -79,27 +79,27 @@ export default function SignIn() {
 					<Typography component="h1" variant="h5">
 						Sign in
 					</Typography>
+					<Box sx={{
+						display: 'flex',
+						flexDirection: 'column',
+						gap: 1,
+						mt: 1,
+					}}
+					>
+						{alerts.map((alert) => (
+							<AlertCollapse
+								alert={alert}
+								alerts={alerts}
+								key={alert.id}
+								setAlerts={setAlerts}
+							/>
+						))}
+					</Box>
 					<Box
 						noValidate
 						component="form"
 						onSubmit={(e) => loginUser(e, setAlerts)}
-						sx={{ mt: 1 }}
 					>
-						<Box sx={{
-							display: 'flex',
-							flexDirection: 'column',
-							gap: 1,
-						}}
-						>
-							{alerts.map((alert) => (
-								<AlertCollapse
-									alert={alert}
-									alerts={alerts}
-									key={alert.id}
-									setAlerts={setAlerts}
-								/>
-							))}
-						</Box>
 						<TextField
 							autoFocus
 							fullWidth
@@ -122,27 +122,57 @@ export default function SignIn() {
 						/>
 						<Button
 							fullWidth
-							sx={{ mt: 3, mb: 2 }}
+							sx={{ mt: 3, mb: 1 }}
 							type="submit"
 							variant="contained"
 						>
 							Sign in
 						</Button>
-						<Typography
-							align="center"
-							color="textSecondary"
-							variant="body2"
-						>
-							{'Don\'t have an account? '}
-							<Link
-								color="textSecondary"
-								component="button"
-								onClick={() => navigate('/signup')}
-							>
-								Sign up
-							</Link>
-						</Typography>
 					</Box>
+					<Box
+						noValidate
+						component="form"
+						onSubmit={(e) => loginDemoUser(e, setAlerts)}
+						sx={{ width: '100%' }}
+					>
+						<Button
+							color="inherit"
+							type="submit"
+							variant="contained"
+							sx={{
+								':hover': {
+									backgroundColor: '#2a2a2a',
+								},
+								backgroundColor: 'grey.900',
+								mb: 3,
+								mt: 0,
+								width: '100%',
+							}}
+						>
+							<Typography
+								color="grey.500"
+								fontSize={14}
+								fontWeight={500}
+								lineHeight={1.75}
+							>
+								Sign in with demo user
+							</Typography>
+						</Button>
+					</Box>
+					<Typography
+						align="center"
+						color="textSecondary"
+						variant="body2"
+					>
+						{'Don\'t have an account? '}
+						<Link
+							color="textSecondary"
+							component="button"
+							onClick={() => navigate('/signup')}
+						>
+							Sign up
+						</Link>
+					</Typography>
 					<Copyright sx={{ mt: 'auto' }} />
 				</Box>
 			</Grid>

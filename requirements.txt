@@ -8,7 +8,7 @@ djangorestframework-simplejwt
 drf-writable-nested
 faker
 gunicorn
-psycopg2
+psycopg2-binary
 pytest
 pytest-django
 pytest-pspec
