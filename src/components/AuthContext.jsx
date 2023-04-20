@@ -58,14 +58,17 @@ export function AuthProvider({ children }) {
 	const loginDemoUser = async (e, setAlerts) => {
 		e.preventDefault();
 
+		const newUserResponse = await fetch('api/create_demo_user');
+		const newUserData = await newUserResponse.json();
+
 		const response = await fetch('api/token/', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({
-				username: 'demouser',
-				password: 'demouser',
+				username: newUserData.username,
+				password: newUserData.password,
 			}),
 		});
 		const data = await response.json();

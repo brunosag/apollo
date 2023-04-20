@@ -1,20 +1,23 @@
-from rest_framework import generics, permissions
-from rest_framework_simplejwt.views import TokenObtainPairView
-
-from .models import Board, List, Card
+from .models import Board, List, Card, User
 from .serializers import (
     MyTokenObtainPairSerializer,
     RegisterSerializer,
     BoardSeriazlier,
     ListSerializer,
-    CardSerializer
+    CardSerializer,
 )
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from faker import Faker
+from rest_framework import generics, permissions
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
     """
     Takes the user's credentials and returns both an access and refresh type JSON web tokens.
     """
+
     serializer_class = MyTokenObtainPairSerializer
 
 
@@ -22,6 +25,7 @@ class RegisterView(generics.CreateAPIView):
     """
     Creates a new user instance.
     """
+
     serializer_class = RegisterSerializer
 
 
@@ -33,11 +37,12 @@ class BoardsView(generics.ListCreateAPIView):
     post:
     Creates a new board instance.
     """
+
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = BoardSeriazlier
 
     def get_queryset(self):
-        boards = Board.objects.filter(user=self.request.user).order_by('-last_access')
+        boards = Board.objects.filter(user=self.request.user).order_by("-last_access")
         return boards
 
     def perform_create(self, serializer):
@@ -58,11 +63,12 @@ class BoardView(generics.RetrieveUpdateDestroyAPIView):
     delete:
     Deletes a board instance.
     """
+
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = BoardSeriazlier
 
     def get_object(self):
-        board = Board.objects.get(user=self.request.user, pk=self.kwargs['pk'])
+        board = Board.objects.get(user=self.request.user, pk=self.kwargs["pk"])
         return board
 
 
@@ -74,6 +80,7 @@ class ListsView(generics.ListCreateAPIView):
     post:
     Creates a new list instance.
     """
+
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = ListSerializer
 
@@ -97,11 +104,12 @@ class ListView(generics.RetrieveUpdateDestroyAPIView):
     delete:
     Deletes a list instance.
     """
+
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = ListSerializer
 
     def get_object(self):
-        list = List.objects.get(pk=self.kwargs['pk'])
+        list = List.objects.get(pk=self.kwargs["pk"])
         return list
 
 
@@ -113,6 +121,7 @@ class CardsView(generics.ListCreateAPIView):
     post:
     Creates a new card instance.
     """
+
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = CardSerializer
 
@@ -137,9 +146,22 @@ class CardView(generics.RetrieveUpdateDestroyAPIView):
     delete:
     Deletes a card instance.
     """
+
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = CardSerializer
 
     def get_object(self):
-        card = Card.objects.get(pk=self.kwargs['pk'])
+        card = Card.objects.get(pk=self.kwargs["pk"])
         return card
+
+
+@csrf_exempt
+def create_demo_user(request):
+    fake = Faker()
+
+    username = fake.user_name()
+    password = fake.password()
+
+    User.objects.create_user(username=username, password=password)
+
+    return JsonResponse({"username": username, "password": password}, status=200)
