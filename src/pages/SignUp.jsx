@@ -88,7 +88,7 @@ export default function SignUp() {
 						height: '100vh',
 						justifyContent: 'center',
 						px: 4,
-						py: 8,
+						py: 4,
 					}}
 				>
 					<Avatar
@@ -171,8 +171,8 @@ export default function SignUp() {
 							{'Already have an account? '}
 							<Link
 								color="textSecondary"
-								component="button"
 								onClick={() => navigate('/signin')}
+								sx={{ cursor: 'pointer' }}
 							>
 								Sign in
 							</Link>

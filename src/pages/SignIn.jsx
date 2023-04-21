@@ -167,8 +167,8 @@ export default function SignIn() {
 						{'Don\'t have an account? '}
 						<Link
 							color="textSecondary"
-							component="button"
 							onClick={() => navigate('/signup')}
+							sx={{ cursor: 'pointer' }}
 						>
 							Sign up
 						</Link>
