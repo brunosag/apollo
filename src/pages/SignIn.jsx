@@ -106,6 +106,7 @@ export default function SignIn() {
 							required
 							autoComplete="username"
 							id="username"
+							inputProps={{ maxLength: 150 }}
 							label="Username"
 							margin="normal"
 							name="username"

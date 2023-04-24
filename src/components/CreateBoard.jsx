@@ -76,6 +76,7 @@ export default function CreateBoard({ getBoards }) {
 						autoFocus
 						fullWidth
 						id="title"
+						inputProps={{ maxLength: 128 }}
 						label="Board title"
 						margin="dense"
 						name="title"

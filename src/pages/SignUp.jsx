@@ -125,6 +125,7 @@ export default function SignUp() {
 							fullWidth
 							required
 							id="username"
+							inputProps={{ maxLength: 150 }}
 							label="Username"
 							margin="normal"
 							name="username"
