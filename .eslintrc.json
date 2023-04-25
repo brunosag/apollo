@@ -9,7 +9,7 @@
 		"indent": ["error", "tab"],
 		"jsx-a11y/anchor-is-valid": "off",
 		"linebreak-style": ["error", "unix"],
-		"max-len": ["warn", { "code": 80 }],
+		"max-len": ["warn", { "code": 120 }],
 		"no-tabs": "off",
 		"no-unused-vars": "warn",
 		"object-curly-newline": "off",
