@@ -91,23 +91,14 @@ export default function Layout() {
 								display: 'flex',
 								gap: 0.8,
 								mr: 5,
+								my: 3,
 							}}
 						>
 							<img
 								alt="Apollo"
-								height="28"
-								src="/static/assets/logo-nobg.png"
+								height="36"
+								src="/static/assets/logo-nav.png"
 							/>
-							<Typography
-								noWrap
-								color="text.primary"
-								variant="h5"
-								sx={{
-									fontWeight: 400,
-								}}
-							>
-								Apollo
-							</Typography>
 						</Box>
 						<Box
 							sx={{
