@@ -1,7 +1,7 @@
 <h1 align="center">
     <br>
     <a href="https://apolloboards.tk">
-        <img src="https://user-images.githubusercontent.com/97703272/199108975-6b3b71b3-b80b-42d1-b5a9-cca9ec503efb.png" alt="Apollo" width="200">
+        <img src="https://github.com/brunosag/apollo/assets/97703272/aeb4eb1d-b6fc-4954-930d-d339594e4ffa" alt="Apollo" width="200">
     </a>
     <br>
     Apollo
@@ -13,7 +13,7 @@
 <p align="center">
     <a href="#about">About</a> •
     <a href="#video-demo">Video Demo</a> •
-    <a href="#how-to-use">How to Use</a> •
+    <a href="#usage">Usage</a> •
     <a href="#acknowledgments">Acknowlegments</a> •
     <a href="#license">License</a> •
     <a href="#contact">Contact</a>
@@ -23,7 +23,7 @@
 
 ## About
 
-Apollo is a robust Kanban-style list-making application that utilizes Django and Django REST Framework for its back-end, and React and Material UI for its front-end. The application features an API that enables users to authenticate using JWT and perform CRUD operations on boards, lists, and cards. Thanks to the React front-end, it operates as a single-page application, enabling smooth and seamless user experience without requiring page reloads.
+Apollo is a robust Kanban-style list-making application inspired by Trello that utilizes Django and Django REST Framework for its back-end, and React and Material UI for its front-end. The application features an API that enables users to authenticate using JWT and perform CRUD operations on boards, lists, and cards. Thanks to the React front-end, it operates as a single-page application, enabling smooth and seamless user experience without requiring page reloads.
 
 Additionally, the app leverages the powerful react-beautiful-dnd library from Atlassian, which enables users to move cards between lists and reorder them with lovely animations. This feature streamlines task management, making it a hassle-free process, and provides an enhanced user experience.
 
@@ -41,8 +41,7 @@ Additionally, the app leverages the powerful react-beautiful-dnd library from At
 
 https://user-images.githubusercontent.com/97703272/202008158-cf3f0d0b-1691-4b7f-b79f-0c8beffa1c2f.mp4
 
-## How to Use
-
+## Usage
 
 | Screenshot | Instructions |
 |--|--|
@@ -76,4 +75,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Bruno Samuel - [LinkedIn](https://www.linkedin.com/in/brunosag/) - brunosag@outlook.com.br
+Bruno Samuel - <a href="https://www.linkedin.com/in/brunosag/" target="_new">LinkedIn</a> - <a href="mailto:brunosag@outlook.com.br" target="_new">brunosag@outlook.com.br</a>
